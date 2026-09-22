@@ -1,335 +1,1212 @@
-Here’s the complete, ready-to-use HTML file.  
-
-Copy everything below into a file named e.g. `personality-language-worksheet.html` and open it in any modern browser (or host it on GitHub Pages).
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English Practice – Personality, Language & Experience</title>
-<style>
-:root {
-  --navy: #1e3a5f;
-  --navy-light: #2c5282;
-  --blue: #3182ce;
-  --green: #38a169;
-  --green-bg: #f0fff4;
-  --red: #e53e3e;
-  --red-bg: #fff5f5;
-  --grey: #f7fafc;
-  --grey-border: #e2e8f0;
-  --text: #2d3748;
-  --muted: #718096;
-  --card: #ffffff;
-  --tip-bg: #ebf8ff;
-  --note-bg: #fefcbf;
-  --skill-bg: #f0fff4;
-  --radius: 10px;
-  --shadow: 0 1px 3px rgba(0,0,0,.08);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; }
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  color: var(--text);
-  background: #edf2f7;
-  line-height: 1.5;
-  min-height: 100vh;
-}
-.topbar {
-  position: fixed; top: 0; left: 0; right: 0; height: 48px;
-  background: var(--navy); color: #fff;
-  display: flex; align-items: center; padding: 0 16px;
-  z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,.15);
-}
-.topbar h1 { font-size: 1.05rem; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.topbar .student-name { font-size: .85rem; opacity: .9; margin-right: 12px; }
-.topbar button {
-  background: rgba(255,255,255,.15); border: none; color: #fff;
-  padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: .85rem;
-  margin-left: 6px;
-}
-.topbar button:hover { background: rgba(255,255,255,.25); }
-.sidebar {
-  position: fixed; top: 48px; left: 0; bottom: 0; width: 240px;
-  background: var(--navy); color: #fff; overflow-y: auto;
-  transition: transform .25s ease; z-index: 90;
-}
-.sidebar nav { padding: 12px 0; }
-.sidebar a {
-  display: block; padding: 10px 18px; color: rgba(255,255,255,.85);
-  text-decoration: none; font-size: .9rem; border-left: 3px solid transparent;
-}
-.sidebar a:hover, .sidebar a.active {
-  background: rgba(255,255,255,.1); color: #fff; border-left-color: #63b3ed;
-}
-.sidebar .sec-num { opacity: .6; margin-right: 6px; font-size: .8rem; }
-.main {
-  margin-left: 240px; margin-top: 48px; padding: 20px 24px 60px;
-  max-width: 860px;
-}
-.section { display: none; }
-.section.active { display: block; }
-.card {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 20px 22px; margin-bottom: 18px;
-}
-.card h2 { font-size: 1.25rem; color: var(--navy); margin-bottom: 8px; }
-.card h3 { font-size: 1.05rem; color: var(--navy-light); margin: 16px 0 8px; }
-.ex-panel {
-  background: var(--grey); border: 1px solid var(--grey-border);
-  border-radius: 8px; padding: 14px 16px; margin: 12px 0;
-}
-.ex-header {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-  margin-bottom: 10px;
-}
-.ex-title { font-weight: 600; font-size: .95rem; flex: 1; }
-.score-pill {
-  background: var(--navy); color: #fff; font-size: .8rem;
-  padding: 3px 10px; border-radius: 20px; min-width: 42px; text-align: center;
-}
-.btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.btn {
-  border: none; border-radius: 6px; padding: 7px 14px; font-size: .85rem;
-  cursor: pointer; font-weight: 500; transition: background .15s;
-}
-.btn-check { background: var(--blue); color: #fff; }
-.btn-check:hover { background: #2b6cb0; }
-.btn-show { background: #805ad5; color: #fff; }
-.btn-show:hover { background: #6b46c1; }
-.btn-clear { background: #a0aec0; color: #fff; }
-.btn-clear:hover { background: #718096; }
-.btn-write { background: #dd6b20; color: #fff; }
-.btn-write:hover { background: #c05621; }
-input[type="text"], select, textarea {
-  font-family: inherit; font-size: .95rem;
-  border: 2px solid var(--grey-border); border-radius: 6px;
-  padding: 7px 10px; background: #fff; color: var(--text);
-  transition: border-color .15s, box-shadow .15s;
-}
-input[type="text"]:focus, select:focus, textarea:focus {
-  outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(49,130,206,.2);
-}
-input.ok, select.ok { border-color: var(--green) !important; background: var(--green-bg); }
-input.bad, select.bad { border-color: var(--red) !important; background: var(--red-bg); }
-input.gap { width: 140px; margin: 0 3px; display: inline-block; }
-input.gap-wide { width: 220px; }
-input.sent { width: 100%; margin-top: 6px; }
-textarea {
-  width: 100%; min-height: 100px; resize: vertical; line-height: 1.45;
-}
-select { min-width: 120px; }
-.tip, .note, .skill {
-  border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: .9rem;
-}
-.tip { background: var(--tip-bg); border-left: 4px solid var(--blue); }
-.note { background: var(--note-bg); border-left: 4px solid #d69e2e; }
-.skill { background: var(--skill-bg); border-left: 4px solid var(--green); }
-.tip strong, .note strong, .skill strong { display: block; margin-bottom: 2px; }
-.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
-.row label { flex: 1; min-width: 180px; }
-.tf-correction { flex: 1; min-width: 160px; display: none; }
-.tf-correction.show { display: block; }
-.lt-feedback {
-  margin-top: 10px; border: 1px solid var(--grey-border); border-radius: 8px;
-  padding: 12px; background: #fff; font-size: .88rem; display: none;
-}
-.lt-feedback.visible { display: block; }
-.lt-issue {
-  border-left: 3px solid #e53e3e; padding: 8px 10px; margin: 8px 0;
-  background: #fff5f5; border-radius: 0 6px 6px 0;
-}
-.lt-issue.style { border-left-color: #dd6b20; background: #fffaf0; }
-.lt-issue .what { font-weight: 600; }
-.lt-issue .why { color: var(--muted); font-size: .85rem; }
-.lt-issue .try { margin-top: 4px; }
-.lt-issue .try span {
-  display: inline-block; background: #ebf8ff; color: var(--blue);
-  padding: 2px 8px; border-radius: 4px; margin: 2px 4px 2px 0;
-  cursor: pointer; font-size: .85rem;
-}
-.lt-issue .try span:hover { background: #bee3f8; }
-#word-popup {
-  position: fixed; z-index: 200; background: #fff;
-  border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.18);
-  padding: 14px 16px; max-width: 320px; display: none;
-  border: 1px solid var(--grey-border); font-size: .9rem;
-}
-#word-popup .wp-word { font-weight: 700; font-size: 1.1rem; color: var(--navy); }
-#word-popup .wp-pos { color: var(--muted); font-style: italic; font-size: .85rem; }
-#word-popup .wp-def { margin: 6px 0; }
-#word-popup .wp-ex { color: var(--muted); font-size: .85rem; margin-top: 4px; }
-#word-popup .wp-close {
-  position: absolute; top: 6px; right: 10px; background: none; border: none;
-  font-size: 1.2rem; cursor: pointer; color: var(--muted);
-}
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 300;
-  display: none; align-items: center; justify-content: center; padding: 16px;
-}
-.modal-overlay.show { display: flex; }
-.modal {
-  background: #fff; border-radius: 12px; max-width: 520px; width: 100%;
-  max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,.2);
-}
-.modal h2 { margin-bottom: 12px; color: var(--navy); }
-.modal .report-list { list-style: none; margin: 12px 0; }
-.modal .report-list li { padding: 6px 0; border-bottom: 1px solid var(--grey-border); font-size: .9rem; }
-.modal .report-list .ok { color: var(--green); }
-.modal .report-list .bad { color: var(--red); }
-.modal .pct { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin: 10px 0; }
-.modal .btn-row { margin-top: 16px; }
-.mobile-nav {
-  display: none; position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--navy); padding: 8px 12px; z-index: 95;
-  justify-content: space-between; align-items: center;
-}
-.mobile-nav button {
-  background: rgba(255,255,255,.15); border: none; color: #fff;
-  padding: 10px 18px; border-radius: 8px; font-size: .9rem; cursor: pointer;
-}
-.hamburger {
-  display: none; background: none; border: none; color: #fff;
-  font-size: 1.4rem; cursor: pointer; padding: 4px 8px;
-}
-@media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: translateX(0); }
-  .main { margin-left: 0; padding: 16px 12px 80px; }
-  .hamburger { display: block; }
-  .mobile-nav { display: flex; }
-  .topbar h1 { font-size: .95rem; }
-  input.gap { width: 110px; }
-  input.gap-wide { width: 160px; }
-}
-.instr { color: var(--muted); font-size: .9rem; margin-bottom: 10px; }
-.ans-reveal { color: var(--green); font-size: .88rem; margin-top: 4px; display: none; }
-.ans-reveal.show { display: block; }
-.hidden { display: none !important; }
-p { margin: 8px 0; }
-ul { padding-left: 20px; margin: 6px 0; }
-li { margin: 3px 0; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1A: English Language & Practice Worksheet</title>
+  <style>
+    :root {
+      --slate-dark: #0f172a;
+      --slate-sidebar: #1e293b;
+      --slate-muted: #64748b;
+      --slate-light: #f8fafc;
+      --blue-primary: #2563eb;
+      --blue-hover: #1d4ed8;
+      --blue-soft: #eff6ff;
+      --emerald-success: #10b981;
+      --emerald-soft: #ecfdf5;
+      --rose-error: #ef4444;
+      --rose-soft: #fef2f2;
+      --amber-warn: #f59e0b;
+      --amber-soft: #fffbeb;
+      --pink-note: #fdf2f8;
+      --pink-border: #f472b6;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--slate-light);
+      color: #334155;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 290px;
+      background-color: var(--slate-sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar-header {
+      padding: 20px 18px;
+      background-color: var(--slate-dark);
+      border-bottom: 1px solid #334155;
+    }
+    .sidebar-header h2 { font-size: 1.1rem; font-weight: 700; color: #f8fafc; letter-spacing: -0.01em; }
+    .sidebar-header p { font-size: 0.78rem; color: #94a3b8; margin-top: 4px; }
+
+    .nav-list { list-style: none; padding: 10px; flex-grow: 1; overflow-y: auto; }
+    .nav-item {
+      padding: 12px 14px;
+      margin-bottom: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .nav-item:hover { background-color: #334155; color: #fff; }
+    .nav-item.active { background-color: var(--blue-primary); color: #fff; font-weight: 600; box-shadow: 0 2px 4px rgba(37,99,235,0.3); }
+    .nav-badge { font-size: 0.75rem; padding: 2px 7px; border-radius: 12px; background: rgba(255,255,255,0.18); font-weight: 600; }
+
+    /* Main Container Structure */
+    .main-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      height: 56px;
+      background: #fff;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .user-profile-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-profile-input label { font-size: 0.88rem; font-weight: 600; color: var(--slate-muted); }
+    .user-profile-input input {
+      padding: 6px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.88rem;
+      outline: none;
+      transition: all 0.2s;
+      background-color: var(--slate-light);
+    }
+    .user-profile-input input:focus { border-color: var(--blue-primary); background-color: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+
+    .top-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary { background-color: var(--blue-primary); color: #fff; }
+    .btn-primary:hover { background-color: var(--blue-hover); box-shadow: 0 2px 4px rgba(37,99,235,0.25); }
+    .btn-secondary { background-color: #fff; border-color: var(--border-color); color: #334155; }
+    .btn-secondary:hover { background-color: #f1f5f9; border-color: #cbd5e1; }
+    .btn-success { background-color: var(--emerald-success); color: #fff; }
+    .btn-success:hover { background-color: #059669; }
+    .btn-danger { background-color: var(--rose-error); color: #fff; }
+    .btn-danger:hover { background-color: #dc2626; }
+
+    .content-area {
+      flex-grow: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .section-panel { display: none; }
+    .section-panel.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Components */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--slate-dark);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .score-pill {
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #f1f5f9;
+      color: var(--slate-dark);
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+    }
+
+    .note-box {
+      background: var(--pink-note);
+      border-left: 4px solid var(--pink-border);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 18px;
+      font-size: 0.9rem;
+      color: #831843;
+      line-height: 1.5;
+    }
+    .note-box h4 { font-size: 0.95rem; margin-bottom: 6px; color: #9d174d; }
+
+    .info-box {
+      background: var(--blue-soft);
+      border-left: 4px solid var(--blue-primary);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 18px;
+      font-size: 0.9rem;
+      color: #1e40af;
+      line-height: 1.5;
+    }
+
+    /* Form Inputs */
+    input[type="text"], select {
+      padding: 7px 11px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+      background-color: #fff;
+    }
+    
+    input[type="text"]:focus, select:focus {
+      border-color: var(--blue-primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+
+    input[type="text"].valid, select.valid {
+      border-color: var(--emerald-success) !important;
+      background-color: var(--emerald-soft) !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+    }
+
+    input[type="text"].invalid, select.invalid {
+      border-color: var(--rose-error) !important;
+      background-color: var(--rose-soft) !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      resize: vertical;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+    textarea:focus { border-color: var(--blue-primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+
+    .exercise-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 18px;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .item-row {
+      margin-bottom: 16px;
+      line-height: 1.5;
+      font-size: 0.93rem;
+      padding: 4px 0;
+    }
+
+    /* Audio Recording Panel */
+    .voice-recording-card {
+      background: var(--slate-light);
+      border: 1px dashed var(--blue-primary);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .voice-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .rec-status { font-size: 0.82rem; font-weight: 600; color: var(--slate-muted); }
+    .rec-status.recording { color: var(--rose-error); animation: pulse 1s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    /* Writing Feedback Box */
+    .writing-feedback {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      background-color: #f1f5f9;
+      font-size: 0.85rem;
+      display: none;
+      border: 1px solid var(--border-color);
+    }
+    .writing-feedback.active { display: block; }
+    .feedback-issue {
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      background: #fff;
+      border-left: 3px solid var(--amber-warn);
+      border-radius: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+    .feedback-issue.error { border-left-color: var(--rose-error); }
+    .feedback-issue.style { border-left-color: var(--blue-primary); }
+
+    /* Word Definition Popup */
+    .word-popup {
+      position: absolute;
+      z-index: 1000;
+      width: 280px;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: var(--shadow-md);
+      padding: 14px;
+      display: none;
+      font-size: 0.85rem;
+    }
+    .word-popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+    .word-popup-title { font-weight: 700; font-size: 1rem; color: var(--slate-dark); }
+    .word-popup-pos { font-style: italic; color: var(--slate-muted); font-size: 0.78rem; }
+    .word-popup-close { cursor: pointer; font-weight: bold; color: var(--slate-muted); font-size: 1rem; }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      backdrop-filter: blur(2px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 650px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body { padding: 20px; overflow-y: auto; flex-grow: 1; font-size: 0.9rem; }
+    .modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background-color: var(--slate-light);
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* Mobile Adaptations */
+    .menu-toggle { display: none; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--slate-dark); }
+
+    @media (max-width: 768px) {
+      .sidebar { position: fixed; left: -290px; top: 0; bottom: 0; }
+      .sidebar.open { transform: translateX(290px); }
+      .menu-toggle { display: block; }
+      .content-area { padding: 14px; }
+      .top-bar { padding: 0 14px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="topbar">
-  <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
-  <h1>Personality, Language & Experience</h1>
-  <span class="student-name" id="nameDisplay"></span>
-  <button id="btnReport">📊 Results</button>
-</div>
+  <!-- Navigation Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Unit 1A Worksheet</h2>
+      <p>Cambridge & Oxford Standard Practice</p>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active" onclick="switchSection('page1')">
+        <span>Page 1: Explanations & Rules</span>
+        <span class="nav-badge">Reference</span>
+      </li>
+      <li class="nav-item" onclick="switchSection('page2')">
+        <span>Page 2: Controlled Practice</span>
+        <span class="nav-badge" id="badge-page2">0/9</span>
+      </li>
+      <li class="nav-item" onclick="switchSection('page3')">
+        <span>Page 3: Semi-Controlled Practice</span>
+        <span class="nav-badge" id="badge-page3">0/10</span>
+      </li>
+      <li class="nav-item" onclick="switchSection('page4')">
+        <span>Page 4: Freer Practice & Speaking</span>
+        <span class="nav-badge">Voice + Writing</span>
+      </li>
+    </ul>
+  </aside>
 
-<aside class="sidebar" id="sidebar">
-  <nav>
-    <a href="#s1" class="active" data-sec="1"><span class="sec-num">01</span> Warm-up & Goals</a>
-    <a href="#s2" data-sec="2"><span class="sec-num">02</span> try to / try + -ing</a>
-    <a href="#s3" data-sec="3"><span class="sec-num">03</span> influence / impact on</a>
-    <a href="#s4" data-sec="4"><span class="sec-num">04</span> make vs do</a>
-    <a href="#s5" data-sec="5"><span class="sec-num">05</span> the fact that & discourse</a>
-    <a href="#s6" data-sec="6"><span class="sec-num">06</span> Gap-fill: personality</a>
-    <a href="#s7" data-sec="7"><span class="sec-num">07</span> Rewrite the paragraph</a>
-    <a href="#s8" data-sec="8"><span class="sec-num">08</span> True / False + correct</a>
-    <a href="#s9" data-sec="9"><span class="sec-num">09</span> Matching collocations</a>
-    <a href="#s10" data-sec="10"><span class="sec-num">10</span> Speaking tasks</a>
-    <a href="#s11" data-sec="11"><span class="sec-num">11</span> Writing: your paragraph</a>
-    <a href="#s12" data-sec="12"><span class="sec-num">12</span> Reflection</a>
-  </nav>
-</aside>
-
-<main class="main" id="main">
-
-<section class="section active" id="s1" data-sec="1">
-  <div class="card">
-    <h2>1. Warm-up & Learning Goals</h2>
-    <p class="instr">Look at the topics we will practise today. They come from common mistakes in speaking and writing about personality, interests and the influence of language and experience.</p>
-    <div class="skill">
-      <strong>🎯 Today’s focus</strong>
-      <ul>
-        <li><strong>try to + infinitive</strong> vs <strong>try + -ing</strong></li>
-        <li><strong>influence / impact on</strong> someone</li>
-        <li><strong>make</strong> vs <strong>do</strong></li>
-        <li>Using <strong>the fact that</strong> and discourse markers</li>
-        <li>Natural collocations: open and friendly, life experience shapes…</li>
-      </ul>
-    </div>
-    <div class="tip">
-      <strong>💡 Tip</strong>
-      Double-click (or long-press on mobile) any English word to see a quick definition and examples.
-    </div>
-    <div class="ex-panel">
-      <div class="ex-header"><span class="ex-title">Quick self-check – How confident are you?</span></div>
-      <p class="instr">Rate yourself 1–5 for each area (1 = not sure, 5 = very confident). This is not scored.</p>
-      <div class="row"><label>try to / try + -ing</label><select data-sid="s1_r1"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-      <div class="row"><label>influence / impact on</label><select data-sid="s1_r2"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-      <div class="row"><label>make vs do</label><select data-sid="s1_r3"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-      <div class="row"><label>Using “the fact that”</label><select data-sid="s1_r4"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-    </div>
-    <div class="ex-panel">
-      <p class="instr"><strong>Speaking / Writing warm-up</strong> (not scored)</p>
-      <p>In 3–4 sentences, introduce yourself: Are you an open and friendly person? What do you like doing in your free time?</p>
-      <textarea data-sid="s1_warm" placeholder="I think I’m an open and friendly person when…"></textarea>
-      <button class="btn btn-write" data-textarea="s1_warm">✨ Check writing</button>
-      <div class="lt-feedback" id="lt-s1_warm"></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="s2" data-sec="2">
-  <div class="card">
-    <h2>2. try to + infinitive  vs  try + -ing</h2>
-    <div class="note">
-      <strong>📝 Mini explanation</strong>
-      <p><strong>try to + infinitive</strong> = make an effort / attempt to do something (often difficult).<br>Example: <em>I’m trying to watch a movie in English.</em></p>
-      <p><strong>try + -ing</strong> = experiment / do something to see what happens.<br>Example: <em>Try watching films with subtitles – it might help.</em></p>
-      <p>Common mistake: “I’m trying watching…” → correct: “I’m trying <strong>to watch</strong>…”</p>
-    </div>
-    <div class="ex-panel" data-ex="2a">
-      <div class="ex-header">
-        <span class="ex-title">2A. Choose the correct form</span>
-        <span class="score-pill" id="score-2a">0/5</span>
-        <div class="btn-row">
-          <button class="btn btn-check" data-ex="2a">Check</button>
-          <button class="btn btn-show" data-ex="2a">Show answers</button>
-          <button class="btn btn-clear" data-ex="2a">Clear</button>
+  <!-- Main Viewport Area -->
+  <div class="main-container">
+    <div class="top-bar">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="user-profile-input">
+          <label for="student-name">Student Name:</label>
+          <input type="text" id="student-name" name="student_name" placeholder="Enter full name..." oninput="saveUserData()">
         </div>
       </div>
-      <div class="row"><label>1. Now I’m trying ___ a movie in English.</label><select data-answer="to watch" data-sid="2a1"><option value="">–</option><option value="to watch">to watch</option><option value="watching">watching</option></select></div>
-      <div class="row"><label>2. If you can’t sleep, try ___ a warm bath.</label><select data-answer="taking" data-sid="2a2"><option value="">–</option><option value="to take">to take</option><option value="taking">taking</option></select></div>
-      <div class="row"><label>3. She’s trying ___ more friendly with new people.</label><select data-answer="to be" data-sid="2a3"><option value="">–</option><option value="to be">to be</option><option value="being">being</option></select></div>
-      <div class="row"><label>4. Try ___ the gym early in the morning – the atmosphere is better.</label><select data-answer="going to|going" data-sid="2a4"><option value="">–</option><option value="to go to">to go to</option><option value="going to">going to</option></select></div>
-      <div class="row"><label>5. I’m trying ___ interesting films in English this month.</label><select data-answer="to watch" data-sid="2a5"><option value="">–</option><option value="to watch">to watch</option><option value="watching">watching</option></select></div>
-    </div>
-    <div class="ex-panel" data-ex="2b">
-      <div class="ex-header">
-        <span class="ex-title">2B. Rewrite – correct the mistake</span>
-        <span class="score-pill" id="score-2b">0/3</span>
-        <div class="btn-row">
-          <button class="btn btn-check" data-ex="2b">Check</button>
-          <button class="btn btn-show" data-ex="2b">Show answers</button>
-          <button class="btn btn-clear" data-ex="2b">Clear</button>
-        </div>
+      <div class="top-actions">
+        <button class="btn btn-primary" onclick="showReportModal()">📊 Generate Report</button>
       </div>
-      <p class="instr">Rewrite the whole sentence correctly.</p>
-      <p>1. Now I’m trying watching a movie in English.</p>
-      <input type="text" class="sent" data-answer="Now I’m trying to watch a movie in English.|I’m trying to watch a movie in English.|Now I am trying to watch a movie in English." data-sid="2b1" placeholder="Rewrite the sentence…">
-      <div class="ans-reveal" data-for="2b1">Now I’m trying to watch a movie in English.</div>
-      <p style="margin-top:12px">2. Try to going to the gym if you want to feel better.</p>
-      <input type="text" class="sent" data-answer="Try going to the gym if you want to feel better." data-sid="2b2" placeholder="Rewrite…">
-      <div class="ans-reveal" data-for="2b2">Try going to the gym if you want to feel better.</div>
-      <p style="margin-top:12px">3. She’s trying being more open with strangers.</p>
-      <input type="text" class="sent" data-answer="She’s trying to be more open with strangers.|She is trying to be more open with strangers." data-sid="2b3" placeholder="Rewrite…">
-      <div class="ans-reveal" data-for="2b3">She’s trying to be more open with strangers.</div>
+    </div>
+
+    <div class="content-area">
+
+      <!-- PAGE 1: EXPLANATIONS -->
+      <section id="page1" class="section-panel active">
+        <div class="card">
+          <div class="card-title">
+            <span>Page 1: Core Grammar & Lexical Explanations</span>
+          </div>
+
+          <div class="info-box">
+            <strong>1. Transitive Verbs vs. Prepositional Errors</strong><br>
+            • <strong>Influence:</strong> Acts as a transitive verb directly affecting an object without prepositions.<br>
+            &nbsp;&nbsp;<em>Correct:</em> "Language influences our perception." (NOT "influences on")<br>
+            • <strong>Impact:</strong> Takes "on" when used as a noun.<br>
+            &nbsp;&nbsp;<em>Correct:</em> "Language has an impact <strong>on</strong> culture."
+          </div>
+
+          <div class="note-box">
+            <h4>2. Media and Language Prepositions</h4>
+            • Use <strong>in</strong> when stating the language medium of media, films, or literature.<br>
+            &nbsp;&nbsp;<em>Correct:</em> "I am watching a movie <strong>in</strong> English." (NOT "on English")
+          </div>
+
+          <div class="info-box">
+            <strong>3. Verb Patterns: Try to do vs. Try doing</strong><br>
+            • <strong>Try + Infinitive (to do):</strong> Making an effort or attempt to accomplish something difficult.<br>
+            &nbsp;&nbsp;<em>Example:</em> "I am trying to learn ten new words a day."<br>
+            • <strong>Try + Gerund (-ing):</strong> Experimenting with a method or action to see if it brings results.<br>
+            &nbsp;&nbsp;<em>Example:</em> "If you can't remember a word, try drawing a picture of it."
+          </div>
+
+          <div class="note-box">
+            <h4>4. Expressing Contrast: In Spite Of</h4>
+            • <strong>In spite of + Noun / -ing:</strong> Followed directly by a noun phrase or gerund.<br>
+            &nbsp;&nbsp;<em>Example:</em> "In spite of the rain, we went out." / "In spite of feeling tired, she studied."<br>
+            • <strong>In spite of the fact that + Clause:</strong> Required when followed by a subject and verb.<br>
+            &nbsp;&nbsp;<em>Example:</em> "In spite of the fact that language barriers exist, people communicate."
+          </div>
+
+          <div class="info-box">
+            <strong>5. Adjective vs. Adverb: Good vs. Well</strong><br>
+            • <strong>Good (Adjective):</strong> Modifies nouns or follows linking verbs (be, sound, feel, look).<br>
+            &nbsp;&nbsp;<em>Example:</em> "That is a good presentation." / "It sounds good."<br>
+            • <strong>Well (Adverb):</strong> Modifies verbs to describe how an action is performed.<br>
+            &nbsp;&nbsp;<em>Example:</em> "She speaks English very well."
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 2: CONTROLLED PRACTICE -->
+      <section id="page2" class="section-panel">
+        <div class="card">
+          <div class="card-title">
+            <span>Page 2: Controlled Practice</span>
+            <span class="score-pill" id="score-page2">0/9</span>
+          </div>
+
+          <p style="margin-bottom: 14px; font-weight:600; color:var(--slate-dark);">Part A: Multiple Choice & Fixed Prepositions</p>
+
+          <div class="item-row">
+            1. She wants to watch the new documentary 
+            <input type="text" style="width:100px;" data-sid="p2_q1" data-answer="in"> English without subtitles.
+          </div>
+
+          <div class="item-row">
+            2. Social background can strongly influence 
+            <input type="text" style="width:100px;" data-sid="p2_q2" data-answer="∅|none|blank|-"> a person's mindset. <em>(Type ∅ or leave blank if no preposition is needed)</em>
+          </div>
+
+          <div class="item-row">
+            3. They expressed their feelings by means 
+            <input type="text" style="width:100px;" data-sid="p2_q3" data-answer="of"> artistic symbols.
+          </div>
+
+          <div class="item-row">
+            4. When we 
+            <select data-sid="p2_q4" data-answer="speak">
+              <option value="">-- Select --</option>
+              <option value="say">say</option>
+              <option value="speak">speak</option>
+              <option value="tell">tell</option>
+            </select>
+            about cultural identity, regional dialects must be considered.
+          </div>
+
+          <div class="item-row">
+            5. The environment has a noticeable impact 
+            <input type="text" style="width:100px;" data-sid="p2_q5" data-answer="on|upon"> childhood development.
+          </div>
+
+          <p style="margin-top: 20px; margin-bottom: 14px; font-weight:600; color:var(--slate-dark);">Part B: Good vs. Well Selection</p>
+
+          <div class="item-row">
+            6. She speaks English very 
+            <select data-sid="p2_q6" data-answer="well">
+              <option value="">-- Select --</option>
+              <option value="good">good</option>
+              <option value="well">well</option>
+            </select> after studying abroad.
+          </div>
+
+          <div class="item-row">
+            7. Family teaches us what is 
+            <select data-sid="p2_q7" data-answer="good">
+              <option value="">-- Select --</option>
+              <option value="good">good</option>
+              <option value="well">well</option>
+            </select> and bad in life.
+          </div>
+
+          <div class="item-row">
+            8. The team performed exceptionally 
+            <select data-sid="p2_q8" data-answer="well">
+              <option value="">-- Select --</option>
+              <option value="good">good</option>
+              <option value="well">well</option>
+            </select> during the final presentation.
+          </div>
+
+          <div class="item-row">
+            9. It sounds 
+            <select data-sid="p2_q9" data-answer="good">
+              <option value="">-- Select --</option>
+              <option value="good">good</option>
+              <option value="well">well</option>
+            </select> to practice speaking with native speakers.
+          </div>
+
+          <div class="exercise-controls">
+            <button class="btn btn-secondary" onclick="checkExercise('page2')">Check Answers</button>
+            <button class="btn btn-secondary" onclick="showAnswers('page2')">Show Answers</button>
+            <button class="btn btn-secondary" onclick="clearExercise('page2')">Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 3: SEMI-CONTROLLED PRACTICE -->
+      <section id="page3" class="section-panel">
+        <div class="card">
+          <div class="card-title">
+            <span>Page 3: Semi-Controlled Practice</span>
+            <span class="score-pill" id="score-page3">0/10</span>
+          </div>
+
+          <p style="margin-bottom: 14px; font-weight:600; color:var(--slate-dark);">Part A: Sentence Rewriting & Error Correction</p>
+
+          <div class="item-row">
+            1. <em>"I'm trying to watch a movie on English."</em>
+            <div style="margin-top:4px;">
+              <input type="text" style="width:100%;" data-sid="p3_q1" data-answer="I'm trying to watch a movie in English.|I am trying to watch a movie in English." placeholder="Rewrite complete sentence...">
+            </div>
+          </div>
+
+          <div class="item-row">
+            2. <em>"These factors can influence on someone's personality."</em>
+            <div style="margin-top:4px;">
+              <input type="text" style="width:100%;" data-sid="p3_q2" data-answer="These factors can influence someone's personality." placeholder="Rewrite complete sentence...">
+            </div>
+          </div>
+
+          <div class="item-row">
+            3. <em>"We communicate by means with words."</em>
+            <div style="margin-top:4px;">
+              <input type="text" style="width:100%;" data-sid="p3_q3" data-answer="We communicate by means of words." placeholder="Rewrite complete sentence...">
+            </div>
+          </div>
+
+          <p style="margin-top: 20px; margin-bottom: 14px; font-weight:600; color:var(--slate-dark);">Part B: Verb Pattern Conjugations (Try to do vs. Try doing)</p>
+
+          <div class="item-row">
+            4. I am 
+            <input type="text" style="width:160px;" data-sid="p3_q4" data-answer="trying to watch"> (try / watch) a foreign film, but my internet connection keeps dropping. <em>(effort)</em>
+          </div>
+
+          <div class="item-row">
+            5. If you have trouble falling asleep, try 
+            <input type="text" style="width:160px;" data-sid="p3_q5" data-answer="drinking"> (drink) warm milk before bed. <em>(experiment)</em>
+          </div>
+
+          <div class="item-row">
+            6. She tried 
+            <input type="text" style="width:160px;" data-sid="p3_q6" data-answer="to reach"> (reach) the top shelf, but she wasn't tall enough. <em>(attempt)</em>
+          </div>
+
+          <div class="item-row">
+            7. Why don't you try 
+            <input type="text" style="width:160px;" data-sid="p3_q7" data-answer="changing"> (change) your password if you can't log in? <em>(experiment)</em>
+          </div>
+
+          <p style="margin-top: 20px; margin-bottom: 14px; font-weight:600; color:var(--slate-dark);">Part C: Expressing Contrast with "In Spite Of"</p>
+
+          <div class="item-row">
+            8. Although they live in different countries, they remain close friends.<br>
+            <span style="font-size:0.8rem; color:var(--slate-muted);">(Use: in spite of the fact that)</span>
+            <input type="text" style="width:100%; margin-top:4px;" data-sid="p3_q8" data-answer="In spite of the fact that they live in different countries, they remain close friends." placeholder="Type complete sentence...">
+          </div>
+
+          <div class="item-row">
+            9. Although he was feeling tired, he finished his essay on time.<br>
+            <span style="font-size:0.8rem; color:var(--slate-muted);">(Use: in spite of feeling)</span>
+            <input type="text" style="width:100%; margin-top:4px;" data-sid="p3_q9" data-answer="In spite of feeling tired, he finished his essay on time." placeholder="Type complete sentence...">
+          </div>
+
+          <div class="item-row">
+            10. Even though language barriers exist, people find ways to communicate.<br>
+            <span style="font-size:0.8rem; color:var(--slate-muted);">(Use: in spite of)</span>
+            <input type="text" style="width:100%; margin-top:4px;" data-sid="p3_q10" data-answer="In spite of language barriers, people find ways to communicate.|In spite of the fact that language barriers exist, people find ways to communicate." placeholder="Type complete sentence...">
+          </div>
+
+          <div class="exercise-controls">
+            <button class="btn btn-secondary" onclick="checkExercise('page3')">Check Answers</button>
+            <button class="btn btn-secondary" onclick="showAnswers('page3')">Show Answers</button>
+            <button class="btn btn-secondary" onclick="clearExercise('page3')">Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 4: FREER PRACTICE & SPEAKING -->
+      <section id="page4" class="section-panel">
+        <div class="card">
+          <div class="card-title">
+            <span>Page 4: Freer Practice, Audio Recording & Speech Checking</span>
+          </div>
+          <p style="margin-bottom: 16px; color: var(--slate-muted);">
+            Complete the speaking prompts by either typing or using your microphone to record your voice. Speech Recognition will automatically transcribe your speech and evaluate your grammar.
+          </p>
+
+          <!-- Prompt 1 -->
+          <div style="margin-bottom: 24px;">
+            <label style="font-weight:600; display:block; margin-bottom:6px;">
+              Speaking Prompt 1: How does your native language or environment shape your thinking and personality?
+            </label>
+            <textarea id="freer-txt-1" data-sid="p4_txt1" placeholder="Type your answer or record your audio below..."></textarea>
+            
+            <div class="voice-recording-card">
+              <div class="voice-controls">
+                <button class="btn btn-danger" id="rec-btn-1" onclick="toggleRecording('freer-txt-1', 'rec-btn-1', 'rec-status-1', 'aud-1')">🎙️ Record Speech</button>
+                <span class="rec-status" id="rec-status-1">Microphone ready</span>
+              </div>
+              <audio id="aud-1" controls style="display:none; width:100%; margin-top:6px;"></audio>
+            </div>
+
+            <div style="margin-top:10px;">
+              <button class="btn btn-secondary" onclick="checkWriting('freer-txt-1', 'feedback-p4-1')">✨ Check Response Writing / Speech Grammar</button>
+            </div>
+            <div id="feedback-p4-1" class="writing-feedback"></div>
+          </div>
+
+          <!-- Prompt 2 -->
+          <div style="margin-bottom: 24px;">
+            <label style="font-weight:600; display:block; margin-bottom:6px;">
+              Speaking Prompt 2: "Language forms our culture code." Do you agree or disagree? Explain your reasoning.
+            </label>
+            <textarea id="freer-txt-2" data-sid="p4_txt2" placeholder="Type your answer or record your audio below..."></textarea>
+
+            <div class="voice-recording-card">
+              <div class="voice-controls">
+                <button class="btn btn-danger" id="rec-btn-2" onclick="toggleRecording('freer-txt-2', 'rec-btn-2', 'rec-status-2', 'aud-2')">🎙️ Record Speech</button>
+                <span class="rec-status" id="rec-status-2">Microphone ready</span>
+              </div>
+              <audio id="aud-2" controls style="display:none; width:100%; margin-top:6px;"></audio>
+            </div>
+
+            <div style="margin-top:10px;">
+              <button class="btn btn-secondary" onclick="checkWriting('freer-txt-2', 'feedback-p4-2')">✨ Check Response Writing / Speech Grammar</button>
+            </div>
+            <div id="feedback-p4-2" class="writing-feedback"></div>
+          </div>
+
+          <!-- Extended Writing -->
+          <div style="margin-bottom: 20px;">
+            <label style="font-weight:600; display:block; margin-bottom:6px;">
+              Extended Writing: Reflect on your language learning journey (120–180 words).
+            </label>
+            <textarea id="extended-writing" data-sid="p4_ext_writing" style="min-height: 150px;" placeholder="Write your full response here..."></textarea>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <button class="btn btn-success" onclick="checkWriting('extended-writing', 'feedback-ext-writing')">✨ Check Writing with LanguageTool</button>
+              <span id="word-count" style="font-size:0.82rem; color:var(--slate-muted); font-weight:600;">0 words</span>
+            </div>
+            <div id="feedback-ext-writing" class="writing-feedback"></div>
+          </div>
+
+        </div>
+      </section>
+
     </div>
   </div>
-</section>
 
-<section class="section" id="s3" data-sec="3">
-  <div class="card">
-    <h2>3. influence / impact on</h2>
-    <div class="note">
-      <strong>📝 Mini explanation</strong>
-      <p><strong>influence</strong> (verb) + <strong>on</strong> / <strong>impact</strong> (noun or verb) + <strong>
+  <!-- Word Definition Popup -->
+  <div id="word-popup" class="word-popup">
+    <div class="word-popup-header">
+      <div>
+        <span class="word-popup-title" id="pop-word">Word</span>
+        <span class="word-popup-pos" id="pop-pos">pos</span>
+      </div>
+      <span class="word-popup-close" onclick="closePopup()">×</span>
+    </div>
+    <div id="pop-def" style="margin-bottom:6px; color:#334155;">Definition loading...</div>
+    <div id="pop-ex" style="font-style:italic; color:#64748b; font-size:0.78rem;"></div>
+  </div>
+
+  <!-- Report Modal -->
+  <div class="modal-overlay" id="report-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size:1.1rem; color:var(--slate-dark);">Student Performance Results</h3>
+        <span style="cursor:pointer; font-weight:bold; font-size:1.1rem;" onclick="closeReportModal()">×</span>
+      </div>
+      <div class="modal-body" id="report-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="copyReportToClipboard()">📋 Copy to Clipboard</button>
+        <button class="btn btn-primary" onclick="downloadReportTxt()">⬇ Download .txt Report</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "1A_italian_by_ear_v2";
+
+    const GLOSSARY = {
+      "influence": { pos: "verb / noun", def: "To have an effect on the character, development, or behavior of someone.", ex: "Culture can influence how we perceive time." },
+      "impact": { pos: "noun", def: "A marked effect or influence.", ex: "The new environment had a huge impact on him." },
+      "personality": { pos: "noun", def: "The combination of characteristics or qualities that form an individual's distinctive character.", ex: "Extroversion is a personality trait." },
+      "culture": { pos: "noun", def: "The ideas, customs, and social behavior of a particular people or society.", ex: "Language is an integral part of culture." },
+      "discourse": { pos: "noun", def: "Written or spoken communication or debate.", ex: "Discourse markers help connect ideas smoothly." },
+      "unique": { pos: "adjective", def: "Being the only one of its kind; unlike anything else.", ex: "Each person's dialect makes them unique." }
+    };
+
+    function normalize(text) {
+      if (!text) return "";
+      return text.toLowerCase()
+                 .trim()
+                 .replace(/[“”]/g, '"')
+                 .replace(/[‘’]/g, "'")
+                 .replace(/\s+/g, ' ')
+                 .replace(/[.?!]$/, '');
+    }
+
+    function isOk(inputVal, targetAnswers) {
+      const normInput = normalize(inputVal);
+      if (!normInput) return false;
+      const answers = targetAnswers.split('|').map(a => normalize(a));
+      for (let ans of answers) {
+        if (normInput === ans) return true;
+        const parts = ans.split(',').map(p => normalize(p));
+        if (parts.includes(normInput)) return true;
+        if (normInput.length > 2 && ans.includes(normInput) && normInput.length >= ans.length * 0.7) return true;
+      }
+      return false;
+    }
+
+    function isValidPrefix(inputVal, targetAnswers) {
+      const normInput = normalize(inputVal);
+      if (!normInput) return true;
+      const answers = targetAnswers.split('|').map(a => normalize(a));
+      return answers.some(ans => {
+        if (ans.startsWith(normInput)) return true;
+        const commaParts = ans.split(',').map(p => normalize(p));
+        return commaParts.some(part => part.startsWith(normInput));
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUserData();
+      setupLiveChecking();
+      setupTextareaEvents();
+      setupWordLookup();
+    });
+
+    function setupLiveChecking() {
+      const inputs = document.querySelectorAll('input[data-answer], select[data-answer]');
+      inputs.forEach(input => {
+        const handler = () => {
+          validateInputLive(input);
+          saveUserData();
+          updateScores();
+        };
+        input.addEventListener('input', handler);
+        input.addEventListener('change', handler);
+      });
+    }
+
+    function validateInputLive(input) {
+      const target = input.getAttribute('data-answer');
+      const val = input.value;
+      if (!val.trim()) {
+        input.classList.remove('valid', 'invalid');
+        return;
+      }
+
+      if (isValidPrefix(val, target)) {
+        input.classList.add('valid');
+        input.classList.remove('invalid');
+      } else {
+        input.classList.add('invalid');
+        input.classList.remove('valid');
+      }
+    }
+
+    function switchSection(pageId) {
+      document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      const navItem = Array.from(document.querySelectorAll('.nav-item')).find(item => item.getAttribute('onclick').includes(pageId));
+      if (navItem) navItem.classList.add('active');
+      if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+    }
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+    function checkExercise(pageId) {
+      const page = document.getElementById(pageId);
+      const inputs = page.querySelectorAll('input[data-answer], select[data-answer]');
+      inputs.forEach(input => {
+        const target = input.getAttribute('data-answer');
+        if (isOk(input.value, target)) {
+          input.classList.add('valid');
+          input.classList.remove('invalid');
+        } else {
+          input.classList.add('invalid');
+          input.classList.remove('valid');
+        }
+      });
+      updateScores();
+    }
+
+    function showAnswers(pageId) {
+      const page = document.getElementById(pageId);
+      const inputs = page.querySelectorAll('input[data-answer], select[data-answer]');
+      inputs.forEach(input => {
+        const answers = input.getAttribute('data-answer').split('|');
+        input.value = answers[0];
+        input.classList.add('valid');
+        input.classList.remove('invalid');
+      });
+      saveUserData();
+      updateScores();
+    }
+
+    function clearExercise(pageId) {
+      const page = document.getElementById(pageId);
+      const inputs = page.querySelectorAll('input, select');
+      inputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('valid', 'invalid');
+      });
+      saveUserData();
+      updateScores();
+    }
+
+    function updateScores() {
+      const pages = ['page2', 'page3'];
+      pages.forEach(pageId => {
+        const page = document.getElementById(pageId);
+        if (!page) return;
+        const inputs = page.querySelectorAll('input[data-answer], select[data-answer]');
+        let correct = 0;
+        inputs.forEach(input => {
+          if (isOk(input.value, input.getAttribute('data-answer'))) correct++;
+        });
+        const scoreStr = `${correct}/${inputs.length}`;
+        const pill = document.getElementById(`score-${pageId}`);
+        const badge = document.getElementById(`badge-${pageId}`);
+        if (pill) pill.textContent = scoreStr;
+        if (badge) badge.textContent = scoreStr;
+      });
+    }
+
+    function saveUserData() {
+      const name = document.getElementById('student-name').value;
+      const data = { name, inputs: {} };
+      document.querySelectorAll('input, select, textarea').forEach((el, idx) => {
+        const key = el.getAttribute('data-sid') || el.id || el.name || `field_${idx}`;
+        data.inputs[key] = el.value;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function loadUserData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        if (data.name) document.getElementById('student-name').value = data.name;
+        if (data.inputs) {
+          document.querySelectorAll('input, select, textarea').forEach((el, idx) => {
+            const key = el.getAttribute('data-sid') || el.id || el.name || `field_${idx}`;
+            if (data.inputs[key] !== undefined) {
+              el.value = data.inputs[key];
+              if (el.hasAttribute('data-answer')) validateInputLive(el);
+            }
+          });
+        }
+        updateScores();
+      } catch (e) { console.error("Error restoring user data", e); }
+    }
+
+    function setupTextareaEvents() {
+      const extWriting = document.getElementById('extended-writing');
+      if (extWriting) {
+        extWriting.addEventListener('input', () => {
+          const text = extWriting.value.trim();
+          const words = text ? text.split(/\s+/).length : 0;
+          document.getElementById('word-count').textContent = `${words} words`;
+          saveUserData();
+        });
+      }
+    }
+
+    /* AUDIO RECORDING & SPEECH RECOGNITION (ASR) LOGIC */
+    let mediaRecorders = {};
+    let audioChunks = {};
+    let speechRecognitions = {};
+
+    async function toggleRecording(textareaId, btnId, statusId, audioId) {
+      const btn = document.getElementById(btnId);
+      const statusEl = document.getElementById(statusId);
+      const audioEl = document.getElementById(audioId);
+      const textarea = document.getElementById(textareaId);
+
+      // Stop recording if currently active
+      if (mediaRecorders[btnId] && mediaRecorders[btnId].state === "recording") {
+        mediaRecorders[btnId].stop();
+        if (speechRecognitions[btnId]) speechRecognitions[btnId].stop();
+        btn.textContent = "🎙️ Record Speech";
+        btn.classList.replace('btn-secondary', 'btn-danger');
+        statusEl.textContent = "Recording saved.";
+        statusEl.classList.remove('recording');
+        return;
+      }
+
+      // Start new recording
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks[btnId] = [];
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorders[btnId] = mediaRecorder;
+
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks[btnId].push(e.data); };
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(audioChunks[btnId], { type: 'audio/webm' });
+          audioEl.src = URL.createObjectURL(blob);
+          audioEl.style.display = 'block';
+          stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorder.start();
+
+        // Browser-native Speech Recognition Setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+          const recognition = new SpeechRecognition();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.lang = 'en-US';
+
+          let initialText = textarea.value;
+          recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = 0; i < event.results.length; i++) {
+              transcript += event.results[i][0].transcript;
+            }
+            textarea.value = (initialText ? initialText + ' ' : '') + transcript;
+            saveUserData();
+          };
+          recognition.start();
+          speechRecognitions[btnId] = recognition;
+        }
+
+        btn.textContent = "⏹️ Stop Recording";
+        btn.classList.replace('btn-danger', 'btn-secondary');
+        statusEl.textContent = "Listening and recording audio...";
+        statusEl.classList.add('recording');
+
+      } catch (err) {
+        alert("Microphone access is required to use speech recording.");
+        console.error("Microphone Access Error:", err);
+      }
+    }
+
+    async function checkWriting(textareaId, feedbackId) {
+      const text = document.getElementById(textareaId).value;
+      const feedbackEl = document.getElementById(feedbackId);
+      
+      if (!text.trim()) {
+        feedbackEl.innerHTML = "<div style='color:var(--rose-error);'>Please write text or record audio prior to executing a check.</div>";
+        feedbackEl.classList.add('active');
+        return;
+      }
+
+      feedbackEl.innerHTML = "<div><em>✨ Checking grammar with LanguageTool API...</em></div>";
+      feedbackEl.classList.add('active');
+
+      const localIssues = [];
+      if (/\b(gonna|wanna|gotta)\b/i.test(text)) localIssues.push("Avoid informal contractions ('gonna', 'wanna') in academic responses.");
+      if (/\b(stuff|thing|things)\b/i.test(text)) localIssues.push("Replace vague terms ('stuff', 'things') with precise vocabulary.");
+      if (text === text.toUpperCase() && text.length > 20) localIssues.push("Avoid using ALL CAPS throughout your response.");
+
+      try {
+        const response = await fetch('https://api.languagetool.org/v2/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ text: text, language: 'en-GB' })
+        });
+
+        const data = await response.json();
+        let html = "<strong>Language & Speech Analysis:</strong><br>";
+
+        if (data.matches.length === 0 && localIssues.length === 0) {
+          html += "<div style='color:var(--emerald-success); margin-top:4px;'>✓ Excellent! No grammatical errors or style suggestions detected.</div>";
+        } else {
+          localIssues.forEach(iss => { html += `<div class="feedback-issue style">💡 <strong>Style Suggestion:</strong> ${iss}</div>`; });
+          data.matches.forEach(m => {
+            const suggestions = m.replacements.slice(0, 3).map(r => `<code>${r.value}</code>`).join(', ');
+            html += `<div class="feedback-issue error"><strong>Grammar / Spelling:</strong> ${m.message}<br>${suggestions ? `<em>Suggestions:</em> ${suggestions}` : ''}</div>`;
+          });
+        }
+        feedbackEl.innerHTML = html;
+      } catch (err) {
+        let html = "<strong>Local Grammar Check (Offline Fallback):</strong><br>";
+        if (localIssues.length > 0) {
+          localIssues.forEach(iss => { html += `<div class="feedback-issue style">💡 <strong>Style Suggestion:</strong> ${iss}</div>`; });
+        } else {
+          html += "<div style='color:var(--amber-warn);'>Network error: Unable to connect to LanguageTool API. Please check your connection.</div>";
+        }
+        feedbackEl.innerHTML = html;
+      }
+    }
+
+    let isPopupJustOpened = false;
+
+    function setupWordLookup() {
+      document.addEventListener('dblclick', (e) => {
+        const sel = window.getSelection().toString().trim();
+        if (sel && sel.length < 30) handleWordLookup(sel, e.clientX, e.clientY);
+      });
+
+      let touchTimer = null;
+      document.addEventListener('touchstart', (e) => {
+        touchTimer = setTimeout(() => {
+          const sel = window.getSelection().toString().trim();
+          if (sel && sel.length < 30 && e.touches[0]) handleWordLookup(sel, e.touches[0].clientX, e.touches[0].clientY);
+        }, 550);
+      });
+
+      document.addEventListener('touchend', () => clearTimeout(touchTimer));
+
+      document.addEventListener('click', (e) => {
+        if (isPopupJustOpened) return;
+        const pop = document.getElementById('word-popup');
+        if (pop.style.display === 'block' && !pop.contains(e.target)) closePopup();
+      });
+
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopup(); });
+    }
+
+    async function handleWordLookup(word, x, y) {
+      const cleanWord = word.replace(/[^a-zA-Z]/g, '').toLowerCase();
+      if (!cleanWord) return;
+
+      const pop = document.getElementById('word-popup');
+      document.getElementById('pop-word').textContent = cleanWord;
+      document.getElementById('pop-pos').textContent = '';
+      document.getElementById('pop-def').textContent = 'Looking up definition...';
+      document.getElementById('pop-ex').textContent = '';
+
+      const posX = Math.min(x, window.innerWidth - 300);
+      const posY = Math.min(y + 10, window.innerHeight - 150);
+      pop.style.left = `${posX}px`;
+      pop.style.top = `${posY}px`;
+      pop.style.display = 'block';
+
+      isPopupJustOpened = true;
+      setTimeout(() => { isPopupJustOpened = false; }, 300);
+
+      if (GLOSSARY[cleanWord]) {
+        const item = GLOSSARY[cleanWord];
+        document.getElementById('pop-pos').textContent = item.pos;
+        document.getElementById('pop-def').textContent = item.def;
+        document.getElementById('pop-ex').textContent = `"${item.ex}"`;
+        return;
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      try {
+        const dmRes = await fetch(`https://api.datamuse.com/words?sp=${cleanWord}&md=d&max=1`, { signal: controller.signal });
+        const dmData = await dmRes.json();
+
+        if (dmData && dmData.length > 0 && dmData[0].defs) {
+          clearTimeout(timeoutId);
+          const defParts = dmData[0].defs[0].split('\t');
+          document.getElementById('pop-pos').textContent = defParts[0] || 'word';
+          document.getElementById('pop-def').textContent = defParts[1] || 'Definition retrieved.';
+          return;
+        }
+
+        const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${cleanWord}`, { signal: controller.signal });
+        const dictData = await dictRes.json();
+        clearTimeout(timeoutId);
+
+        if (Array.isArray(dictData) && dictData[0].meanings) {
+          const firstMeaning = dictData[0].meanings[0];
+          const firstDef = firstMeaning.definitions[0];
+          document.getElementById('pop-pos').textContent = firstMeaning.partOfSpeech || '';
+          document.getElementById('pop-def').textContent = firstDef.definition;
+          if (firstDef.example) document.getElementById('pop-ex').textContent = `"${firstDef.example}"`;
+          return;
+        }
+
+        document.getElementById('pop-def').textContent = 'No definition found for this term.';
+      } catch (err) {
+        document.getElementById('pop-def').textContent = 'Lookup request timed out or unavailable.';
+      }
+    }
+
+    function closePopup() { document.getElementById('word-popup').style.display = 'none'; }
+
+    function showReportModal() {
+      const name = document.getElementById('student-name').value.trim();
+      if (!name) {
+        alert("Please enter your name in the top panel before generating the results report.");
+        document.getElementById('student-name').focus();
+        return;
+      }
+
+      const modalBody = document.getElementById('report-modal-body');
+      let totalItems = 0;
+      let totalCorrect = 0;
+
+      let html = `<p><strong>Student Name:</strong> ${name}</p>`;
+      html += `<p style="margin-bottom:12px;"><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>`;
+      html += `<hr style="margin-bottom:14px; border:none; border-top:1px solid #e2e8f0;">`;
+
+      const pages = ['page2', 'page3'];
+      const pageTitles = {
+        'page2': 'Page 2: Controlled Practice',
+        'page3': 'Page 3: Semi-Controlled Practice'
+      };
+
+      pages.forEach(pageId => {
+        const page = document.getElementById(pageId);
+        if (!page) return;
+        const inputs = page.querySelectorAll('input[data-answer], select[data-answer]');
+        html += `<h4 style="margin-top:10px; font-weight:700; color:var(--slate-dark);">${pageTitles[pageId]}</h4><ul style="padding-left:18px; font-size:0.85rem; margin-bottom:10px;">`;
+        
+        inputs.forEach((input, idx) => {
+          totalItems++;
+          const target = input.getAttribute('data-answer');
+          const isCorrect = isOk(input.value, target);
+          if (isCorrect) totalCorrect++;
+
+          const mark = isCorrect ? '✓' : '✗';
+          const style = isCorrect ? 'color:var(--emerald-success)' : 'color:var(--rose-error)';
+          html += `<li style="${style}">${mark} Item ${idx + 1}: ${input.value || '(blank)'} ${!isCorrect ? `— Answer: <strong>${target.split('|')[0]}</strong>` : ''}</li>`;
+        });
+        html += `</ul>`;
+      });
+
+      const percentage = Math.round((totalCorrect / totalItems) * 100);
+      html = `<div style="background:#f1f5f9; padding:10px 14px; border-radius:6px; margin-bottom:14px; border:1px solid var(--border-color);">
+                <strong>Overall Auto-scored Performance: ${totalCorrect}/${totalItems} (${percentage}%)</strong>
+              </div>` + html;
+
+      modalBody.innerHTML = html;
+      document.getElementById('report-modal').classList.add('active');
+    }
+
+    function closeReportModal() { document.getElementById('report-modal').classList.remove('active'); }
+
+    function copyReportToClipboard() {
+      const bodyText = document.getElementById('report-modal-body').innerText;
+      navigator.clipboard.writeText(bodyText).then(() => { alert("Report copied to clipboard."); });
+    }
+
+    function downloadReportTxt() {
+      const bodyText = document.getElementById('report-modal-body').innerText;
+      const blob = new Blob([bodyText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Unit_1A_Report_${document.getElementById('student-name').value.replace(/\s+/g, '_')}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
