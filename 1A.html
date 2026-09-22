@@ -1,0 +1,335 @@
+Here’s the complete, ready-to-use HTML file.  
+
+Copy everything below into a file named e.g. `personality-language-worksheet.html` and open it in any modern browser (or host it on GitHub Pages).
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice – Personality, Language & Experience</title>
+<style>
+:root {
+  --navy: #1e3a5f;
+  --navy-light: #2c5282;
+  --blue: #3182ce;
+  --green: #38a169;
+  --green-bg: #f0fff4;
+  --red: #e53e3e;
+  --red-bg: #fff5f5;
+  --grey: #f7fafc;
+  --grey-border: #e2e8f0;
+  --text: #2d3748;
+  --muted: #718096;
+  --card: #ffffff;
+  --tip-bg: #ebf8ff;
+  --note-bg: #fefcbf;
+  --skill-bg: #f0fff4;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background: #edf2f7;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; padding: 0 16px;
+  z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,.15);
+}
+.topbar h1 { font-size: 1.05rem; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar .student-name { font-size: .85rem; opacity: .9; margin-right: 12px; }
+.topbar button {
+  background: rgba(255,255,255,.15); border: none; color: #fff;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: .85rem;
+  margin-left: 6px;
+}
+.topbar button:hover { background: rgba(255,255,255,.25); }
+.sidebar {
+  position: fixed; top: 48px; left: 0; bottom: 0; width: 240px;
+  background: var(--navy); color: #fff; overflow-y: auto;
+  transition: transform .25s ease; z-index: 90;
+}
+.sidebar nav { padding: 12px 0; }
+.sidebar a {
+  display: block; padding: 10px 18px; color: rgba(255,255,255,.85);
+  text-decoration: none; font-size: .9rem; border-left: 3px solid transparent;
+}
+.sidebar a:hover, .sidebar a.active {
+  background: rgba(255,255,255,.1); color: #fff; border-left-color: #63b3ed;
+}
+.sidebar .sec-num { opacity: .6; margin-right: 6px; font-size: .8rem; }
+.main {
+  margin-left: 240px; margin-top: 48px; padding: 20px 24px 60px;
+  max-width: 860px;
+}
+.section { display: none; }
+.section.active { display: block; }
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 22px; margin-bottom: 18px;
+}
+.card h2 { font-size: 1.25rem; color: var(--navy); margin-bottom: 8px; }
+.card h3 { font-size: 1.05rem; color: var(--navy-light); margin: 16px 0 8px; }
+.ex-panel {
+  background: var(--grey); border: 1px solid var(--grey-border);
+  border-radius: 8px; padding: 14px 16px; margin: 12px 0;
+}
+.ex-header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+}
+.ex-title { font-weight: 600; font-size: .95rem; flex: 1; }
+.score-pill {
+  background: var(--navy); color: #fff; font-size: .8rem;
+  padding: 3px 10px; border-radius: 20px; min-width: 42px; text-align: center;
+}
+.btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn {
+  border: none; border-radius: 6px; padding: 7px 14px; font-size: .85rem;
+  cursor: pointer; font-weight: 500; transition: background .15s;
+}
+.btn-check { background: var(--blue); color: #fff; }
+.btn-check:hover { background: #2b6cb0; }
+.btn-show { background: #805ad5; color: #fff; }
+.btn-show:hover { background: #6b46c1; }
+.btn-clear { background: #a0aec0; color: #fff; }
+.btn-clear:hover { background: #718096; }
+.btn-write { background: #dd6b20; color: #fff; }
+.btn-write:hover { background: #c05621; }
+input[type="text"], select, textarea {
+  font-family: inherit; font-size: .95rem;
+  border: 2px solid var(--grey-border); border-radius: 6px;
+  padding: 7px 10px; background: #fff; color: var(--text);
+  transition: border-color .15s, box-shadow .15s;
+}
+input[type="text"]:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(49,130,206,.2);
+}
+input.ok, select.ok { border-color: var(--green) !important; background: var(--green-bg); }
+input.bad, select.bad { border-color: var(--red) !important; background: var(--red-bg); }
+input.gap { width: 140px; margin: 0 3px; display: inline-block; }
+input.gap-wide { width: 220px; }
+input.sent { width: 100%; margin-top: 6px; }
+textarea {
+  width: 100%; min-height: 100px; resize: vertical; line-height: 1.45;
+}
+select { min-width: 120px; }
+.tip, .note, .skill {
+  border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: .9rem;
+}
+.tip { background: var(--tip-bg); border-left: 4px solid var(--blue); }
+.note { background: var(--note-bg); border-left: 4px solid #d69e2e; }
+.skill { background: var(--skill-bg); border-left: 4px solid var(--green); }
+.tip strong, .note strong, .skill strong { display: block; margin-bottom: 2px; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+.row label { flex: 1; min-width: 180px; }
+.tf-correction { flex: 1; min-width: 160px; display: none; }
+.tf-correction.show { display: block; }
+.lt-feedback {
+  margin-top: 10px; border: 1px solid var(--grey-border); border-radius: 8px;
+  padding: 12px; background: #fff; font-size: .88rem; display: none;
+}
+.lt-feedback.visible { display: block; }
+.lt-issue {
+  border-left: 3px solid #e53e3e; padding: 8px 10px; margin: 8px 0;
+  background: #fff5f5; border-radius: 0 6px 6px 0;
+}
+.lt-issue.style { border-left-color: #dd6b20; background: #fffaf0; }
+.lt-issue .what { font-weight: 600; }
+.lt-issue .why { color: var(--muted); font-size: .85rem; }
+.lt-issue .try { margin-top: 4px; }
+.lt-issue .try span {
+  display: inline-block; background: #ebf8ff; color: var(--blue);
+  padding: 2px 8px; border-radius: 4px; margin: 2px 4px 2px 0;
+  cursor: pointer; font-size: .85rem;
+}
+.lt-issue .try span:hover { background: #bee3f8; }
+#word-popup {
+  position: fixed; z-index: 200; background: #fff;
+  border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.18);
+  padding: 14px 16px; max-width: 320px; display: none;
+  border: 1px solid var(--grey-border); font-size: .9rem;
+}
+#word-popup .wp-word { font-weight: 700; font-size: 1.1rem; color: var(--navy); }
+#word-popup .wp-pos { color: var(--muted); font-style: italic; font-size: .85rem; }
+#word-popup .wp-def { margin: 6px 0; }
+#word-popup .wp-ex { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+#word-popup .wp-close {
+  position: absolute; top: 6px; right: 10px; background: none; border: none;
+  font-size: 1.2rem; cursor: pointer; color: var(--muted);
+}
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 300;
+  display: none; align-items: center; justify-content: center; padding: 16px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff; border-radius: 12px; max-width: 520px; width: 100%;
+  max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,.2);
+}
+.modal h2 { margin-bottom: 12px; color: var(--navy); }
+.modal .report-list { list-style: none; margin: 12px 0; }
+.modal .report-list li { padding: 6px 0; border-bottom: 1px solid var(--grey-border); font-size: .9rem; }
+.modal .report-list .ok { color: var(--green); }
+.modal .report-list .bad { color: var(--red); }
+.modal .pct { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin: 10px 0; }
+.modal .btn-row { margin-top: 16px; }
+.mobile-nav {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--navy); padding: 8px 12px; z-index: 95;
+  justify-content: space-between; align-items: center;
+}
+.mobile-nav button {
+  background: rgba(255,255,255,.15); border: none; color: #fff;
+  padding: 10px 18px; border-radius: 8px; font-size: .9rem; cursor: pointer;
+}
+.hamburger {
+  display: none; background: none; border: none; color: #fff;
+  font-size: 1.4rem; cursor: pointer; padding: 4px 8px;
+}
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 16px 12px 80px; }
+  .hamburger { display: block; }
+  .mobile-nav { display: flex; }
+  .topbar h1 { font-size: .95rem; }
+  input.gap { width: 110px; }
+  input.gap-wide { width: 160px; }
+}
+.instr { color: var(--muted); font-size: .9rem; margin-bottom: 10px; }
+.ans-reveal { color: var(--green); font-size: .88rem; margin-top: 4px; display: none; }
+.ans-reveal.show { display: block; }
+.hidden { display: none !important; }
+p { margin: 8px 0; }
+ul { padding-left: 20px; margin: 6px 0; }
+li { margin: 3px 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+  <h1>Personality, Language & Experience</h1>
+  <span class="student-name" id="nameDisplay"></span>
+  <button id="btnReport">📊 Results</button>
+</div>
+
+<aside class="sidebar" id="sidebar">
+  <nav>
+    <a href="#s1" class="active" data-sec="1"><span class="sec-num">01</span> Warm-up & Goals</a>
+    <a href="#s2" data-sec="2"><span class="sec-num">02</span> try to / try + -ing</a>
+    <a href="#s3" data-sec="3"><span class="sec-num">03</span> influence / impact on</a>
+    <a href="#s4" data-sec="4"><span class="sec-num">04</span> make vs do</a>
+    <a href="#s5" data-sec="5"><span class="sec-num">05</span> the fact that & discourse</a>
+    <a href="#s6" data-sec="6"><span class="sec-num">06</span> Gap-fill: personality</a>
+    <a href="#s7" data-sec="7"><span class="sec-num">07</span> Rewrite the paragraph</a>
+    <a href="#s8" data-sec="8"><span class="sec-num">08</span> True / False + correct</a>
+    <a href="#s9" data-sec="9"><span class="sec-num">09</span> Matching collocations</a>
+    <a href="#s10" data-sec="10"><span class="sec-num">10</span> Speaking tasks</a>
+    <a href="#s11" data-sec="11"><span class="sec-num">11</span> Writing: your paragraph</a>
+    <a href="#s12" data-sec="12"><span class="sec-num">12</span> Reflection</a>
+  </nav>
+</aside>
+
+<main class="main" id="main">
+
+<section class="section active" id="s1" data-sec="1">
+  <div class="card">
+    <h2>1. Warm-up & Learning Goals</h2>
+    <p class="instr">Look at the topics we will practise today. They come from common mistakes in speaking and writing about personality, interests and the influence of language and experience.</p>
+    <div class="skill">
+      <strong>🎯 Today’s focus</strong>
+      <ul>
+        <li><strong>try to + infinitive</strong> vs <strong>try + -ing</strong></li>
+        <li><strong>influence / impact on</strong> someone</li>
+        <li><strong>make</strong> vs <strong>do</strong></li>
+        <li>Using <strong>the fact that</strong> and discourse markers</li>
+        <li>Natural collocations: open and friendly, life experience shapes…</li>
+      </ul>
+    </div>
+    <div class="tip">
+      <strong>💡 Tip</strong>
+      Double-click (or long-press on mobile) any English word to see a quick definition and examples.
+    </div>
+    <div class="ex-panel">
+      <div class="ex-header"><span class="ex-title">Quick self-check – How confident are you?</span></div>
+      <p class="instr">Rate yourself 1–5 for each area (1 = not sure, 5 = very confident). This is not scored.</p>
+      <div class="row"><label>try to / try + -ing</label><select data-sid="s1_r1"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+      <div class="row"><label>influence / impact on</label><select data-sid="s1_r2"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+      <div class="row"><label>make vs do</label><select data-sid="s1_r3"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+      <div class="row"><label>Using “the fact that”</label><select data-sid="s1_r4"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+    </div>
+    <div class="ex-panel">
+      <p class="instr"><strong>Speaking / Writing warm-up</strong> (not scored)</p>
+      <p>In 3–4 sentences, introduce yourself: Are you an open and friendly person? What do you like doing in your free time?</p>
+      <textarea data-sid="s1_warm" placeholder="I think I’m an open and friendly person when…"></textarea>
+      <button class="btn btn-write" data-textarea="s1_warm">✨ Check writing</button>
+      <div class="lt-feedback" id="lt-s1_warm"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="s2" data-sec="2">
+  <div class="card">
+    <h2>2. try to + infinitive  vs  try + -ing</h2>
+    <div class="note">
+      <strong>📝 Mini explanation</strong>
+      <p><strong>try to + infinitive</strong> = make an effort / attempt to do something (often difficult).<br>Example: <em>I’m trying to watch a movie in English.</em></p>
+      <p><strong>try + -ing</strong> = experiment / do something to see what happens.<br>Example: <em>Try watching films with subtitles – it might help.</em></p>
+      <p>Common mistake: “I’m trying watching…” → correct: “I’m trying <strong>to watch</strong>…”</p>
+    </div>
+    <div class="ex-panel" data-ex="2a">
+      <div class="ex-header">
+        <span class="ex-title">2A. Choose the correct form</span>
+        <span class="score-pill" id="score-2a">0/5</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="2a">Check</button>
+          <button class="btn btn-show" data-ex="2a">Show answers</button>
+          <button class="btn btn-clear" data-ex="2a">Clear</button>
+        </div>
+      </div>
+      <div class="row"><label>1. Now I’m trying ___ a movie in English.</label><select data-answer="to watch" data-sid="2a1"><option value="">–</option><option value="to watch">to watch</option><option value="watching">watching</option></select></div>
+      <div class="row"><label>2. If you can’t sleep, try ___ a warm bath.</label><select data-answer="taking" data-sid="2a2"><option value="">–</option><option value="to take">to take</option><option value="taking">taking</option></select></div>
+      <div class="row"><label>3. She’s trying ___ more friendly with new people.</label><select data-answer="to be" data-sid="2a3"><option value="">–</option><option value="to be">to be</option><option value="being">being</option></select></div>
+      <div class="row"><label>4. Try ___ the gym early in the morning – the atmosphere is better.</label><select data-answer="going to|going" data-sid="2a4"><option value="">–</option><option value="to go to">to go to</option><option value="going to">going to</option></select></div>
+      <div class="row"><label>5. I’m trying ___ interesting films in English this month.</label><select data-answer="to watch" data-sid="2a5"><option value="">–</option><option value="to watch">to watch</option><option value="watching">watching</option></select></div>
+    </div>
+    <div class="ex-panel" data-ex="2b">
+      <div class="ex-header">
+        <span class="ex-title">2B. Rewrite – correct the mistake</span>
+        <span class="score-pill" id="score-2b">0/3</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="2b">Check</button>
+          <button class="btn btn-show" data-ex="2b">Show answers</button>
+          <button class="btn btn-clear" data-ex="2b">Clear</button>
+        </div>
+      </div>
+      <p class="instr">Rewrite the whole sentence correctly.</p>
+      <p>1. Now I’m trying watching a movie in English.</p>
+      <input type="text" class="sent" data-answer="Now I’m trying to watch a movie in English.|I’m trying to watch a movie in English.|Now I am trying to watch a movie in English." data-sid="2b1" placeholder="Rewrite the sentence…">
+      <div class="ans-reveal" data-for="2b1">Now I’m trying to watch a movie in English.</div>
+      <p style="margin-top:12px">2. Try to going to the gym if you want to feel better.</p>
+      <input type="text" class="sent" data-answer="Try going to the gym if you want to feel better." data-sid="2b2" placeholder="Rewrite…">
+      <div class="ans-reveal" data-for="2b2">Try going to the gym if you want to feel better.</div>
+      <p style="margin-top:12px">3. She’s trying being more open with strangers.</p>
+      <input type="text" class="sent" data-answer="She’s trying to be more open with strangers.|She is trying to be more open with strangers." data-sid="2b3" placeholder="Rewrite…">
+      <div class="ans-reveal" data-for="2b3">She’s trying to be more open with strangers.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="s3" data-sec="3">
+  <div class="card">
+    <h2>3. influence / impact on</h2>
+    <div class="note">
+      <strong>📝 Mini explanation</strong>
+      <p><strong>influence</strong> (verb) + <strong>on</strong> / <strong>impact</strong> (noun or verb) + <strong>
