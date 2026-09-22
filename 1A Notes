@@ -1,0 +1,1441 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice – Personality, Language & Experience</title>
+<style>
+:root {
+  --navy: #1e3a5f;
+  --navy-light: #2c5282;
+  --blue: #3182ce;
+  --green: #38a169;
+  --green-bg: #f0fff4;
+  --red: #e53e3e;
+  --red-bg: #fff5f5;
+  --grey: #f7fafc;
+  --grey-border: #e2e8f0;
+  --text: #2d3748;
+  --muted: #718096;
+  --card: #ffffff;
+  --tip-bg: #ebf8ff;
+  --note-bg: #fefcbf;
+  --skill-bg: #f0fff4;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background: #edf2f7;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+/* Top bar */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; padding: 0 16px;
+  z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,.15);
+}
+.topbar h1 { font-size: 1.05rem; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar .student-name { font-size: .85rem; opacity: .9; margin-right: 12px; }
+.topbar button {
+  background: rgba(255,255,255,.15); border: none; color: #fff;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: .85rem;
+  margin-left: 6px;
+}
+.topbar button:hover { background: rgba(255,255,255,.25); }
+/* Sidebar */
+.sidebar {
+  position: fixed; top: 48px; left: 0; bottom: 0; width: 240px;
+  background: var(--navy); color: #fff; overflow-y: auto;
+  transition: transform .25s ease; z-index: 90;
+}
+.sidebar nav { padding: 12px 0; }
+.sidebar a {
+  display: block; padding: 10px 18px; color: rgba(255,255,255,.85);
+  text-decoration: none; font-size: .9rem; border-left: 3px solid transparent;
+}
+.sidebar a:hover, .sidebar a.active {
+  background: rgba(255,255,255,.1); color: #fff; border-left-color: #63b3ed;
+}
+.sidebar .sec-num { opacity: .6; margin-right: 6px; font-size: .8rem; }
+/* Main */
+.main {
+  margin-left: 240px; margin-top: 48px; padding: 20px 24px 60px;
+  max-width: 860px;
+}
+.section { display: none; }
+.section.active { display: block; }
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 22px; margin-bottom: 18px;
+}
+.card h2 { font-size: 1.25rem; color: var(--navy); margin-bottom: 8px; }
+.card h3 { font-size: 1.05rem; color: var(--navy-light); margin: 16px 0 8px; }
+.ex-panel {
+  background: var(--grey); border: 1px solid var(--grey-border);
+  border-radius: 8px; padding: 14px 16px; margin: 12px 0;
+}
+.ex-header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+}
+.ex-title { font-weight: 600; font-size: .95rem; flex: 1; }
+.score-pill {
+  background: var(--navy); color: #fff; font-size: .8rem;
+  padding: 3px 10px; border-radius: 20px; min-width: 42px; text-align: center;
+}
+.btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn {
+  border: none; border-radius: 6px; padding: 7px 14px; font-size: .85rem;
+  cursor: pointer; font-weight: 500; transition: background .15s;
+}
+.btn-check { background: var(--blue); color: #fff; }
+.btn-check:hover { background: #2b6cb0; }
+.btn-show { background: #805ad5; color: #fff; }
+.btn-show:hover { background: #6b46c1; }
+.btn-clear { background: #a0aec0; color: #fff; }
+.btn-clear:hover { background: #718096; }
+.btn-write { background: #dd6b20; color: #fff; }
+.btn-write:hover { background: #c05621; }
+/* Inputs */
+input[type="text"], select, textarea {
+  font-family: inherit; font-size: .95rem;
+  border: 2px solid var(--grey-border); border-radius: 6px;
+  padding: 7px 10px; background: #fff; color: var(--text);
+  transition: border-color .15s, box-shadow .15s;
+}
+input[type="text"]:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(49,130,206,.2);
+}
+input.ok, select.ok { border-color: var(--green) !important; background: var(--green-bg); }
+input.bad, select.bad { border-color: var(--red) !important; background: var(--red-bg); }
+input.gap { width: 140px; margin: 0 3px; display: inline-block; }
+input.gap-wide { width: 220px; }
+input.sent { width: 100%; margin-top: 6px; }
+textarea {
+  width: 100%; min-height: 100px; resize: vertical; line-height: 1.45;
+}
+select { min-width: 120px; }
+/* Feedback boxes */
+.tip, .note, .skill {
+  border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: .9rem;
+}
+.tip { background: var(--tip-bg); border-left: 4px solid var(--blue); }
+.note { background: var(--note-bg); border-left: 4px solid #d69e2e; }
+.skill { background: var(--skill-bg); border-left: 4px solid var(--green); }
+.tip strong, .note strong, .skill strong { display: block; margin-bottom: 2px; }
+/* Matching / T-F rows */
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+.row label { flex: 1; min-width: 180px; }
+.tf-correction { flex: 1; min-width: 160px; display: none; }
+.tf-correction.show { display: block; }
+/* Writing feedback */
+.lt-feedback {
+  margin-top: 10px; border: 1px solid var(--grey-border); border-radius: 8px;
+  padding: 12px; background: #fff; font-size: .88rem; display: none;
+}
+.lt-feedback.visible { display: block; }
+.lt-issue {
+  border-left: 3px solid #e53e3e; padding: 8px 10px; margin: 8px 0;
+  background: #fff5f5; border-radius: 0 6px 6px 0;
+}
+.lt-issue.style { border-left-color: #dd6b20; background: #fffaf0; }
+.lt-issue .what { font-weight: 600; }
+.lt-issue .why { color: var(--muted); font-size: .85rem; }
+.lt-issue .try { margin-top: 4px; }
+.lt-issue .try span {
+  display: inline-block; background: #ebf8ff; color: var(--blue);
+  padding: 2px 8px; border-radius: 4px; margin: 2px 4px 2px 0;
+  cursor: pointer; font-size: .85rem;
+}
+.lt-issue .try span:hover { background: #bee3f8; }
+/* Word popup */
+#word-popup {
+  position: fixed; z-index: 200; background: #fff;
+  border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.18);
+  padding: 14px 16px; max-width: 320px; display: none;
+  border: 1px solid var(--grey-border); font-size: .9rem;
+}
+#word-popup .wp-word { font-weight: 700; font-size: 1.1rem; color: var(--navy); }
+#word-popup .wp-pos { color: var(--muted); font-style: italic; font-size: .85rem; }
+#word-popup .wp-def { margin: 6px 0; }
+#word-popup .wp-ex { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+#word-popup .wp-close {
+  position: absolute; top: 6px; right: 10px; background: none; border: none;
+  font-size: 1.2rem; cursor: pointer; color: var(--muted);
+}
+/* Report modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 300;
+  display: none; align-items: center; justify-content: center; padding: 16px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff; border-radius: 12px; max-width: 520px; width: 100%;
+  max-height: 85vh; overflow-y: auto; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,.2);
+}
+.modal h2 { margin-bottom: 12px; color: var(--navy); }
+.modal .report-list { list-style: none; margin: 12px 0; }
+.modal .report-list li { padding: 6px 0; border-bottom: 1px solid var(--grey-border); font-size: .9rem; }
+.modal .report-list .ok { color: var(--green); }
+.modal .report-list .bad { color: var(--red); }
+.modal .pct { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin: 10px 0; }
+.modal .btn-row { margin-top: 16px; }
+/* Mobile nav */
+.mobile-nav {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--navy); padding: 8px 12px; z-index: 95;
+  justify-content: space-between; align-items: center;
+}
+.mobile-nav button {
+  background: rgba(255,255,255,.15); border: none; color: #fff;
+  padding: 10px 18px; border-radius: 8px; font-size: .9rem; cursor: pointer;
+}
+.hamburger {
+  display: none; background: none; border: none; color: #fff;
+  font-size: 1.4rem; cursor: pointer; padding: 4px 8px;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 16px 12px 80px; }
+  .hamburger { display: block; }
+  .mobile-nav { display: flex; }
+  .topbar h1 { font-size: .95rem; }
+  input.gap { width: 110px; }
+  input.gap-wide { width: 160px; }
+}
+/* Utility */
+.instr { color: var(--muted); font-size: .9rem; margin-bottom: 10px; }
+.highlight { background: #fefcbf; padding: 1px 3px; border-radius: 3px; }
+.ans-reveal { color: var(--green); font-size: .88rem; margin-top: 4px; display: none; }
+.ans-reveal.show { display: block; }
+.hidden { display: none !important; }
+p { margin: 8px 0; }
+ul { padding-left: 20px; margin: 6px 0; }
+li { margin: 3px 0; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+  <h1>Personality, Language & Experience</h1>
+  <span class="student-name" id="nameDisplay"></span>
+  <button id="btnReport">📊 Results</button>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <nav>
+    <a href="#s1" class="active" data-sec="1"><span class="sec-num">01</span> Warm-up & Goals</a>
+    <a href="#s2" data-sec="2"><span class="sec-num">02</span> try to / try + -ing</a>
+    <a href="#s3" data-sec="3"><span class="sec-num">03</span> influence / impact on</a>
+    <a href="#s4" data-sec="4"><span class="sec-num">04</span> make vs do</a>
+    <a href="#s5" data-sec="5"><span class="sec-num">05</span> the fact that & discourse</a>
+    <a href="#s6" data-sec="6"><span class="sec-num">06</span> Gap-fill: personality</a>
+    <a href="#s7" data-sec="7"><span class="sec-num">07</span> Rewrite the paragraph</a>
+    <a href="#s8" data-sec="8"><span class="sec-num">08</span> True / False + correct</a>
+    <a href="#s9" data-sec="9"><span class="sec-num">09</span> Matching collocations</a>
+    <a href="#s10" data-sec="10"><span class="sec-num">10</span> Speaking tasks</a>
+    <a href="#s11" data-sec="11"><span class="sec-num">11</span> Writing: your paragraph</a>
+    <a href="#s12" data-sec="12"><span class="sec-num">12</span> Reflection</a>
+  </nav>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main" id="main">
+
+<!-- ========== SECTION 1 ========== -->
+<section class="section active" id="s1" data-sec="1">
+  <div class="card">
+    <h2>1. Warm-up & Learning Goals</h2>
+    <p class="instr">Look at the topics we will practise today. They come from common mistakes in speaking and writing about personality, interests and the influence of language and experience.</p>
+
+    <div class="skill">
+      <strong>🎯 Today’s focus</strong>
+      <ul>
+        <li><strong>try to + infinitive</strong> vs <strong>try + -ing</strong></li>
+        <li><strong>influence / impact on</strong> someone</li>
+        <li><strong>make</strong> vs <strong>do</strong></li>
+        <li>Using <strong>the fact that</strong> and discourse markers</li>
+        <li>Natural collocations: open and friendly, life experience shapes…</li>
+      </ul>
+    </div>
+
+    <div class="tip">
+      <strong>💡 Tip</strong>
+      Double-click (or long-press on mobile) any English word to see a quick definition and examples.
+    </div>
+
+    <div class="ex-panel">
+      <div class="ex-header">
+        <span class="ex-title">Quick self-check – How confident are you?</span>
+      </div>
+      <p class="instr">Rate yourself 1–5 for each area (1 = not sure, 5 = very confident). This is not scored.</p>
+      <div class="row">
+        <label>try to / try + -ing</label>
+        <select data-sid="s1_r1"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+      </div>
+      <div class="row">
+        <label>influence / impact on</label>
+        <select data-sid="s1_r2"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+      </div>
+      <div class="row">
+        <label>make vs do</label>
+        <select data-sid="s1_r3"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+      </div>
+      <div class="row">
+        <label>Using “the fact that”</label>
+        <select data-sid="s1_r4"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+      </div>
+    </div>
+
+    <div class="ex-panel">
+      <p class="instr"><strong>Speaking / Writing warm-up</strong> (not scored)</p>
+      <p>In 3–4 sentences, introduce yourself: Are you an open and friendly person? What do you like doing in your free time?</p>
+      <textarea data-sid="s1_warm" placeholder="I think I’m an open and friendly person when…"></textarea>
+      <button class="btn btn-write" data-textarea="s1_warm">✨ Check writing</button>
+      <div class="lt-feedback" id="lt-s1_warm"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 2 ========== -->
+<section class="section" id="s2" data-sec="2">
+  <div class="card">
+    <h2>2. try to + infinitive  vs  try + -ing</h2>
+
+    <div class="note">
+      <strong>📝 Mini explanation</strong>
+      <p><strong>try to + infinitive</strong> = make an effort / attempt to do something (often difficult).<br>
+      Example: <em>I’m trying to watch a movie in English.</em></p>
+      <p><strong>try + -ing</strong> = experiment / do something to see what happens.<br>
+      Example: <em>Try watching films with subtitles – it might help.</em></p>
+      <p>Common mistake: “I’m trying watching…” → correct: “I’m trying <strong>to watch</strong>…”</p>
+    </div>
+
+    <div class="ex-panel" data-ex="2a">
+      <div class="ex-header">
+        <span class="ex-title">2A. Choose the correct form</span>
+        <span class="score-pill" id="score-2a">0/5</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="2a">Check</button>
+          <button class="btn btn-show" data-ex="2a">Show answers</button>
+          <button class="btn btn-clear" data-ex="2a">Clear</button>
+        </div>
+      </div>
+      <div class="row">
+        <label>1. Now I’m trying ___ a movie in English.</label>
+        <select data-answer="to watch" data-sid="2a1">
+          <option value="">–</option>
+          <option value="to watch">to watch</option>
+          <option value="watching">watching</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>2. If you can’t sleep, try ___ a warm bath.</label>
+        <select data-answer="taking" data-sid="2a2">
+          <option value="">–</option>
+          <option value="to take">to take</option>
+          <option value="taking">taking</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>3. She’s trying ___ more friendly with new people.</label>
+        <select data-answer="to be" data-sid="2a3">
+          <option value="">–</option>
+          <option value="to be">to be</option>
+          <option value="being">being</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>4. Try ___ the gym early in the morning – the atmosphere is better.</label>
+        <select data-answer="going to|going" data-sid="2a4">
+          <option value="">–</option>
+          <option value="to go to">to go to</option>
+          <option value="going to">going to</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>5. I’m trying ___ interesting films in English this month.</label>
+        <select data-answer="to watch" data-sid="2a5">
+          <option value="">–</option>
+          <option value="to watch">to watch</option>
+          <option value="watching">watching</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="ex-panel" data-ex="2b">
+      <div class="ex-header">
+        <span class="ex-title">2B. Rewrite – correct the mistake</span>
+        <span class="score-pill" id="score-2b">0/3</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="2b">Check</button>
+          <button class="btn btn-show" data-ex="2b">Show answers</button>
+          <button class="btn btn-clear" data-ex="2b">Clear</button>
+        </div>
+      </div>
+      <p class="instr">Rewrite the whole sentence correctly.</p>
+      <p>1. Now I’m trying watching a movie in English.</p>
+      <input type="text" class="sent" data-answer="Now I’m trying to watch a movie in English.|I’m trying to watch a movie in English.|Now I am trying to watch a movie in English." data-sid="2b1" placeholder="Rewrite the sentence…">
+      <div class="ans-reveal" data-for="2b1">Now I’m trying to watch a movie in English.</div>
+
+      <p style="margin-top:12px">2. Try to going to the gym if you want to feel better.</p>
+      <input type="text" class="sent" data-answer="Try going to the gym if you want to feel better.|Try going to the gym if you want to feel better." data-sid="2b2" placeholder="Rewrite…">
+      <div class="ans-reveal" data-for="2b2">Try going to the gym if you want to feel better.</div>
+
+      <p style="margin-top:12px">3. She’s trying being more open with strangers.</p>
+      <input type="text" class="sent" data-answer="She’s trying to be more open with strangers.|She is trying to be more open with strangers." data-sid="2b3" placeholder="Rewrite…">
+      <div class="ans-reveal" data-for="2b3">She’s trying to be more open with strangers.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 3 ========== -->
+<section class="section" id="s3" data-sec="3">
+  <div class="card">
+    <h2>3. influence / impact on</h2>
+
+    <div class="note">
+      <strong>📝 Mini explanation</strong>
+      <p><strong>influence</strong> (verb) + <strong>on</strong> / <strong>impact</strong> (noun or verb) + <strong>on</strong></p>
+      <p>Correct: <em>These factors can influence someone’s personality.</em><br>
+      Correct: <em>Place where you live also has an impact on you.</em></p>
+      <p>Common mistake: “influence on someone’s one’s personality” or missing “on”.</p>
+      <p><strong>someone</strong> and <strong>one</strong> both mean “a person” – don’t write “someone’s one’s”.</p>
+    </div>
+
+    <div class="ex-panel" data-ex="3a">
+      <div class="ex-header">
+        <span class="ex-title">3A. Gap-fill – prepositions & forms</span>
+        <span class="score-pill" id="score-3a">0/5</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="3a">Check</button>
+          <button class="btn btn-show" data-ex="3a">Show answers</button>
+          <button class="btn btn-clear" data-ex="3a">Clear</button>
+        </div>
+      </div>
+      <p>1. These factors can influence <input type="text" class="gap" data-answer="someone's|someone’s|a person's|one's" data-sid="3a1"> personality.</p>
+      <p>2. The place where you live has a big impact <input type="text" class="gap" data-answer="on" data-sid="3a2"> you.</p>
+      <p>3. Language can have a strong influence <input type="text" class="gap" data-answer="on" data-sid="3a3"> the way we think.</p>
+      <p>4. Family gives you your first ideas about life and has an impact <input type="text" class="gap" data-answer="on" data-sid="3a4"> your character.</p>
+      <p>5. Does the culture of the South have an influence <input type="text" class="gap" data-answer="on" data-sid="3a5"> how friendly people are?</p>
+    </div>
+
+    <div class="ex-panel" data-ex="3b">
+      <div class="ex-header">
+        <span class="ex-title">3B. Correct the sentence</span>
+        <span class="score-pill" id="score-3b">0/3</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="3b">Check</button>
+          <button class="btn btn-show" data-ex="3b">Show answers</button>
+          <button class="btn btn-clear" data-ex="3b">Clear</button>
+        </div>
+      </div>
+      <p>1. These factors can influence on someone’s one’s personality.</p>
+      <input type="text" class="sent" data-answer="These factors can influence someone’s personality.|These factors can influence someone's personality.|These factors can influence a person's personality." data-sid="3b1" placeholder="Correct version…">
+      <div class="ans-reveal" data-for="3b1">These factors can influence someone’s personality.</div>
+
+      <p style="margin-top:12px">2. Place where you live also has impact on you.</p>
+      <input type="text" class="sent" data-answer="The place where you live also has an impact on you.|Place where you live also has an impact on you." data-sid="3b2" placeholder="Correct version…">
+      <div class="ans-reveal" data-for="3b2">The place where you live also has an impact on you.</div>
+
+      <p style="margin-top:12px">3. Language forms our culture code on us by means of words.</p>
+      <input type="text" class="sent" data-answer="Language forms our culture code by means of words.|Language forms our culture by means of words, phrases and idioms." data-sid="3b3" placeholder="Correct version…">
+      <div class="ans-reveal" data-for="3b3">Language forms our culture code by means of words.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 4 ========== -->
+<section class="section" id="s4" data-sec="4">
+  <div class="card">
+    <h2>4. make vs do</h2>
+
+    <div class="note">
+      <strong>📝 Mini explanation</strong>
+      <p><strong>make</strong> = create / produce / cause something to exist or happen.<br>
+      <em>All these make us unique.</em> / <em>make a decision, make a mistake, make friends</em></p>
+      <p><strong>do</strong> = perform an action / activity.<br>
+      <em>do sport, do homework, do the shopping</em></p>
+      <p>In the text: “All these <strong>make</strong> us unique” is correct.</p>
+    </div>
+
+    <div class="ex-panel" data-ex="4a">
+      <div class="ex-header">
+        <span class="ex-title">4A. make or do?</span>
+        <span class="score-pill" id="score-4a">0/6</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="4a">Check</button>
+          <button class="btn btn-show" data-ex="4a">Show answers</button>
+          <button class="btn btn-clear" data-ex="4a">Clear</button>
+        </div>
+      </div>
+      <div class="row">
+        <label>1. All these factors ___ us unique.</label>
+        <select data-answer="make" data-sid="4a1"><option value="">–</option><option>make</option><option>do</option></select>
+      </div>
+      <div class="row">
+        <label>2. I ___ sport three times a week.</label>
+        <select data-answer="do" data-sid="4a2"><option value="">–</option><option>make</option><option>do</option></select>
+      </div>
+      <div class="row">
+        <label>3. Travelling can ___ a big difference to your personality.</label>
+        <select data-answer="make" data-sid="4a3"><option value="">–</option><option>make</option><option>do</option></select>
+      </div>
+      <div class="row">
+        <label>4. She always ___ her best in every situation.</label>
+        <select data-answer="does" data-sid="4a4"><option value="">–</option><option>makes</option><option>does</option></select>
+      </div>
+      <div class="row">
+        <label>5. What ___ you unique as a person?</label>
+        <select data-answer="makes" data-sid="4a5"><option value="">–</option><option>makes</option><option>does</option></select>
+      </div>
+      <div class="row">
+        <label>6. I need to ___ a decision about my studies.</label>
+        <select data-answer="make" data-sid="4a6"><option value="">–</option><option>make</option><option>do</option></select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 5 ========== -->
+<section class="section" id="s5" data-sec="5">
+  <div class="card">
+    <h2>5. the fact that & discourse markers</h2>
+
+    <div class="note">
+      <strong>📝 Mini explanation</strong>
+      <p>Use <strong>the fact that</strong> to introduce a whole clause as a noun idea:<br>
+      <em>…in spite of <strong>the fact that</strong> we think that language doesn’t have a large meaning.</em></p>
+      <p>Common mistake: “in spite of we thinking that…” or “in spite of /we/us thinking that…”</p>
+      <p>Other useful markers: <strong>on the one hand … on the other hand</strong>, <strong>in spite of the fact that</strong>.</p>
+    </div>
+
+    <div class="ex-panel" data-ex="5a">
+      <div class="ex-header">
+        <span class="ex-title">5A. Complete with “the fact that” or a suitable marker</span>
+        <span class="score-pill" id="score-5a">0/4</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="5a">Check</button>
+          <button class="btn btn-show" data-ex="5a">Show answers</button>
+          <button class="btn btn-clear" data-ex="5a">Clear</button>
+        </div>
+      </div>
+      <p>1. Language still shapes us <input type="text" class="gap-wide" data-answer="in spite of the fact that|despite the fact that" data-sid="5a1"> many people think it has little meaning.</p>
+      <p>2. <input type="text" class="gap-wide" data-answer="On the one hand" data-sid="5a2"> I am open and friendly; <input type="text" class="gap-wide" data-answer="on the other hand" data-sid="5a3"> I need other people to be friendly too.</p>
+      <p>3. I enjoy travelling <input type="text" class="gap-wide" data-answer="in spite of the fact that|despite the fact that" data-sid="5a4"> I don’t always have the opportunity.</p>
+    </div>
+
+    <div class="ex-panel" data-ex="5b">
+      <div class="ex-header">
+        <span class="ex-title">5B. Rewrite using “the fact that”</span>
+        <span class="score-pill" id="score-5b">0/2</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="5b">Check</button>
+          <button class="btn btn-show" data-ex="5b">Show answers</button>
+          <button class="btn btn-clear" data-ex="5b">Clear</button>
+        </div>
+      </div>
+      <p>1. …in spite of we thinking that language doesn’t have large meaning.</p>
+      <input type="text" class="sent" data-answer="in spite of the fact that we think that language doesn’t have a large meaning|in spite of the fact that we think language doesn’t have a large meaning|despite the fact that we think that language doesn’t have a large meaning" data-sid="5b1" placeholder="Rewrite the underlined part…">
+      <div class="ans-reveal" data-for="5b1">in spite of the fact that we think that language doesn’t have a large meaning</div>
+
+      <p style="margin-top:12px">2. Many people ignore language even though it forms our culture.</p>
+      <input type="text" class="sent" data-answer="Many people ignore language in spite of the fact that it forms our culture.|Many people ignore language despite the fact that it forms our culture." data-sid="5b2" placeholder="Rewrite using ‘the fact that’…">
+      <div class="ans-reveal" data-for="5b2">Many people ignore language in spite of the fact that it forms our culture.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 6 ========== -->
+<section class="section" id="s6" data-sec="6">
+  <div class="card">
+    <h2>6. Gap-fill: personality & experience</h2>
+    <p class="instr">Complete the text with suitable words from the box (or your own correct forms). Focus on the structures we practised.</p>
+
+    <div class="tip">
+      <strong>Word bank (ideas)</strong>
+      open and friendly · try to · impact on · make · the fact that · influence · life experience · shapes
+    </div>
+
+    <div class="ex-panel" data-ex="6a">
+      <div class="ex-header">
+        <span class="ex-title">6A. Complete the paragraph</span>
+        <span class="score-pill" id="score-6a">0/8</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="6a">Check</button>
+          <button class="btn btn-show" data-ex="6a">Show answers</button>
+          <button class="btn btn-clear" data-ex="6a">Clear</button>
+        </div>
+      </div>
+      <p>
+        I think that I’m an <input type="text" class="gap" data-answer="open and friendly|open" data-sid="6a1"> person, but only if other people are friendly with me too.
+        I like sport, art and travelling. Now I’m <input type="text" class="gap" data-answer="trying to watch|trying to" data-sid="6a2"> a movie in English.
+        Travelling is my passion – I travel every time I have the opportunity.
+      </p>
+      <p>
+        These factors can <input type="text" class="gap" data-answer="influence" data-sid="6a3"> someone’s personality because they define your character, mind and habits.
+        All these <input type="text" class="gap" data-answer="make" data-sid="6a4"> us unique.
+        Your <input type="text" class="gap" data-answer="life experience" data-sid="6a5"> <input type="text" class="gap" data-answer="shapes" data-sid="6a6"> your thinking.
+        The place where you live also has an <input type="text" class="gap" data-answer="impact on" data-sid="6a7"> you.
+        Language forms our culture in spite of <input type="text" class="gap-wide" data-answer="the fact that" data-sid="6a8"> we sometimes think it has little meaning.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 7 ========== -->
+<section class="section" id="s7" data-sec="7">
+  <div class="card">
+    <h2>7. Rewrite the paragraph</h2>
+    <p class="instr">Read the original (with typical mistakes). Rewrite it correctly. Use the structures from the previous sections.</p>
+
+    <div class="ex-panel" style="background:#fff5f5;border-color:#feb2b2;">
+      <p><strong>Original (with mistakes):</strong></p>
+      <p style="font-size:.92rem;">
+        I think that i’m open and friendly person. But i’m friendly person if other people are friendly with me also.
+        Now i’m trying watching a movie in English. Travelling is my passion. I travel every time when i have opportunity.
+        These factors can influence on someone’s one’s personality because it defines your character.
+        All these make us unique. Place where you live also has impact on you.
+        If say speak/talk about language i feel that it forms our culture code on us by means of words
+        in spite of we thinking that langue doesn’t have large meaning.
+      </p>
+    </div>
+
+    <div class="ex-panel" data-ex="7a">
+      <div class="ex-header">
+        <span class="ex-title">7A. Your corrected version</span>
+        <span class="score-pill" id="score-7a">–</span>
+      </div>
+      <p class="instr">This is an open response – write a clear, natural paragraph. It will not be auto-scored, but you can use “Check writing” for feedback.</p>
+      <textarea data-sid="7a_text" rows="10" placeholder="I think that I’m an open and friendly person…"></textarea>
+      <button class="btn btn-write" data-textarea="7a_text">✨ Check writing</button>
+      <div class="lt-feedback" id="lt-7a_text"></div>
+
+      <div class="tip" style="margin-top:14px;">
+        <strong>Key points to include</strong>
+        <ul>
+          <li>an open and friendly person</li>
+          <li>I’m trying <strong>to</strong> watch…</li>
+          <li>influence someone’s personality (no extra “on someone’s one’s”)</li>
+          <li>has an impact <strong>on</strong> you</li>
+          <li>in spite of <strong>the fact that</strong> we think…</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 8 ========== -->
+<section class="section" id="s8" data-sec="8">
+  <div class="card">
+    <h2>8. True / False + correction</h2>
+    <p class="instr">Decide if the statement is true or false according to good English usage. If false, write a correct version.</p>
+
+    <div class="ex-panel" data-ex="8a">
+      <div class="ex-header">
+        <span class="ex-title">8A. True or False?</span>
+        <span class="score-pill" id="score-8a">0/5</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="8a">Check</button>
+          <button class="btn btn-show" data-ex="8a">Show answers</button>
+          <button class="btn btn-clear" data-ex="8a">Clear</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <label>1. “I’m trying watching a film” is correct.</label>
+        <select data-answer="False" data-sid="8a1" class="tf-select">
+          <option value="">–</option><option>True</option><option>False</option>
+        </select>
+        <input type="text" class="tf-correction" data-answer="I’m trying to watch a film.|I am trying to watch a film." data-sid="8a1c" placeholder="Correction if False…">
+      </div>
+      <div class="row">
+        <label>2. “These factors can influence someone’s personality” is correct.</label>
+        <select data-answer="True" data-sid="8a2" class="tf-select">
+          <option value="">–</option><option>True</option><option>False</option>
+        </select>
+        <input type="text" class="tf-correction" data-answer="" data-sid="8a2c" placeholder="Correction if False…">
+      </div>
+      <div class="row">
+        <label>3. “The place has impact on you” needs “an” before impact.</label>
+        <select data-answer="True" data-sid="8a3" class="tf-select">
+          <option value="">–</option><option>True</option><option>False</option>
+        </select>
+        <input type="text" class="tf-correction" data-answer="" data-sid="8a3c" placeholder="Correction if False…">
+      </div>
+      <div class="row">
+        <label>4. “All these do us unique” is the natural collocation.</label>
+        <select data-answer="False" data-sid="8a4" class="tf-select">
+          <option value="">–</option><option>True</option><option>False</option>
+        </select>
+        <input type="text" class="tf-correction" data-answer="All these make us unique." data-sid="8a4c" placeholder="Correction if False…">
+      </div>
+      <div class="row">
+        <label>5. We can say “in spite of the fact that we think…”</label>
+        <select data-answer="True" data-sid="8a5" class="tf-select">
+          <option value="">–</option><option>True</option><option>False</option>
+        </select>
+        <input type="text" class="tf-correction" data-answer="" data-sid="8a5c" placeholder="Correction if False…">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 9 ========== -->
+<section class="section" id="s9" data-sec="9">
+  <div class="card">
+    <h2>9. Matching collocations & phrases</h2>
+
+    <div class="ex-panel" data-ex="9a">
+      <div class="ex-header">
+        <span class="ex-title">9A. Match the halves</span>
+        <span class="score-pill" id="score-9a">0/6</span>
+        <div class="btn-row">
+          <button class="btn btn-check" data-ex="9a">Check</button>
+          <button class="btn btn-show" data-ex="9a">Show answers</button>
+          <button class="btn btn-clear" data-ex="9a">Clear</button>
+        </div>
+      </div>
+      <div class="row">
+        <label>1. an open and</label>
+        <select data-answer="friendly person" data-sid="9a1">
+          <option value="">–</option>
+          <option>friendly person</option>
+          <option>impact on you</option>
+          <option>to watch a film</option>
+          <option>us unique</option>
+          <option>the fact that</option>
+          <option>your thinking</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>2. I’m trying</label>
+        <select data-answer="to watch a film" data-sid="9a2">
+          <option value="">–</option>
+          <option>friendly person</option>
+          <option>impact on you</option>
+          <option>to watch a film</option>
+          <option>us unique</option>
+          <option>the fact that</option>
+          <option>your thinking</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>3. has an</label>
+        <select data-answer="impact on you" data-sid="9a3">
+          <option value="">–</option>
+          <option>friendly person</option>
+          <option>impact on you</option>
+          <option>to watch a film</option>
+          <option>us unique</option>
+          <option>the fact that</option>
+          <option>your thinking</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>4. make</label>
+        <select data-answer="us unique" data-sid="9a4">
+          <option value="">–</option>
+          <option>friendly person</option>
+          <option>impact on you</option>
+          <option>to watch a film</option>
+          <option>us unique</option>
+          <option>the fact that</option>
+          <option>your thinking</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>5. in spite of</label>
+        <select data-answer="the fact that" data-sid="9a5">
+          <option value="">–</option>
+          <option>friendly person</option>
+          <option>impact on you</option>
+          <option>to watch a film</option>
+          <option>us unique</option>
+          <option>the fact that</option>
+          <option>your thinking</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>6. life experience shapes</label>
+        <select data-answer="your thinking" data-sid="9a6">
+          <option value="">–</option>
+          <option>friendly person</option>
+          <option>impact on you</option>
+          <option>to watch a film</option>
+          <option>us unique</option>
+          <option>the fact that</option>
+          <option>your thinking</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 10 ========== -->
+<section class="section" id="s10" data-sec="10">
+  <div class="card">
+    <h2>10. Speaking tasks</h2>
+    <p class="instr">These are open productive tasks. Practise speaking (record yourself if possible) or write notes. Not auto-scored.</p>
+
+    <div class="ex-panel">
+      <h3>Task A – Introduce yourself (1–2 minutes)</h3>
+      <p>Talk about:</p>
+      <ul>
+        <li>whether you are an open and friendly person</li>
+        <li>what you like doing (sport, art, travelling, films…)</li>
+        <li>something you are trying to do at the moment (use <em>try to</em>)</li>
+      </ul>
+      <textarea data-sid="s10a" placeholder="Notes or full answer…"></textarea>
+      <button class="btn btn-write" data-textarea="s10a">✨ Check writing</button>
+      <div class="lt-feedback" id="lt-s10a"></div>
+    </div>
+
+    <div class="ex-panel">
+      <h3>Task B – Discuss the influence of language & place</h3>
+      <p>Answer the questions. Use <em>influence / impact on</em>, <em>the fact that</em>, <em>make us unique</em>.</p>
+      <ul>
+        <li>How does the place where you live have an impact on you?</li>
+        <li>Do you think the language we speak influences our personality? Why / why not?</li>
+        <li>What factors make people unique, in your opinion?</li>
+      </ul>
+      <textarea data-sid="s10b" rows="6" placeholder="Your ideas…"></textarea>
+      <button class="btn btn-write" data-textarea="s10b">✨ Check writing</button>
+      <div class="lt-feedback" id="lt-s10b"></div>
+    </div>
+
+    <div class="ex-panel">
+      <h3>Task C – Pair discussion prompts</h3>
+      <p>If you have a partner, discuss:</p>
+      <ul>
+        <li>On the one hand … on the other hand … (advantages of living in a big city vs a small town)</li>
+        <li>In spite of the fact that … (something you do even though it is difficult)</li>
+      </ul>
+      <textarea data-sid="s10c" placeholder="Useful phrases you will use…"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 11 ========== -->
+<section class="section" id="s11" data-sec="11">
+  <div class="card">
+    <h2>11. Writing: your own paragraph</h2>
+    <p class="instr">Write a short paragraph (80–120 words) about yourself and the factors that shape your personality. Use at least four of the target structures.</p>
+
+    <div class="skill">
+      <strong>Target structures to include</strong>
+      <ul>
+        <li>I’m trying to …</li>
+        <li>… has an impact on …</li>
+        <li>… influence(s) …</li>
+        <li>… make(s) us / me unique</li>
+        <li>in spite of the fact that …</li>
+        <li>life experience shapes …</li>
+      </ul>
+    </div>
+
+    <div class="ex-panel">
+      <textarea data-sid="s11_para" rows="10" placeholder="I think I’m an open and friendly person when…"></textarea>
+      <button class="btn btn-write" data-textarea="s11_para">✨ Check writing</button>
+      <div class="lt-feedback" id="lt-s11_para"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 12 ========== -->
+<section class="section" id="s12" data-sec="12">
+  <div class="card">
+    <h2>12. Reflection</h2>
+    <p class="instr">Think about what you have practised. Not scored.</p>
+
+    <div class="ex-panel">
+      <p>1. Which structure was the most useful for you today?</p>
+      <textarea data-sid="s12_1" rows="2"></textarea>
+
+      <p style="margin-top:12px">2. Which mistake do you think you still make sometimes?</p>
+      <textarea data-sid="s12_2" rows="2"></textarea>
+
+      <p style="margin-top:12px">3. Write one correct sentence you want to remember:</p>
+      <textarea data-sid="s12_3" rows="2"></textarea>
+    </div>
+
+    <div class="tip">
+      <strong>Well done!</strong>
+      Open the Results Report (top bar) to see your score on the auto-checked exercises and download a summary.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <button id="prevSec">← Prev</button>
+  <span id="secIndicator">1 / 12</span>
+  <button id="nextSec">Next →</button>
+</div>
+
+<!-- WORD POPUP -->
+<div id="word-popup">
+  <button class="wp-close" id="wpClose">×</button>
+  <div class="wp-word" id="wpWord"></div>
+  <div class="wp-pos" id="wpPos"></div>
+  <div class="wp-def" id="wpDef"></div>
+  <div class="wp-ex" id="wpEx"></div>
+</div>
+
+<!-- RESULTS MODAL -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal">
+    <h2>Results Report</h2>
+    <p>Enter your name to generate the report:</p>
+    <input type="text" id="reportName" placeholder="Your name" style="width:100%;margin:8px 0 12px;">
+    <div id="reportContent" class="hidden">
+      <div class="pct" id="reportPct"></div>
+      <ul class="report-list" id="reportList"></ul>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-check" id="genReport">Generate</button>
+      <button class="btn btn-show" id="copyReport">Copy to clipboard</button>
+      <button class="btn btn-clear" id="dlReport">Download .txt</button>
+      <button class="btn" style="background:#a0aec0;color:#fff;" id="closeReport">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ========== CONFIG ========== */
+const STORAGE_KEY = '1A_personality_language_exp_';
+const GLOSSARY = {
+  "open": { pos: "adj.", def: "willing to talk and share feelings; friendly and not closed.", ex: "She is a very open person." },
+  "friendly": { pos: "adj.", def: "behaving in a kind, pleasant way towards someone.", ex: "People in the South are more friendly." },
+  "influence": { pos: "v./n.", def: "to have an effect on the way someone thinks or behaves.", ex: "Language can influence our thinking." },
+  "impact": { pos: "n./v.", def: "a strong effect or influence on someone or something.", ex: "The place has a big impact on you." },
+  "unique": { pos: "adj.", def: "being the only one of its kind; special.", ex: "All these make us unique." },
+  "shape": { pos: "v.", def: "to influence the way something develops.", ex: "Life experience shapes your thinking." },
+  "personality": { pos: "n.", def: "the combination of characteristics that form a person's character.", ex: "These factors influence your personality." },
+  "opportunity": { pos: "n.", def: "a chance to do something.", ex: "I travel every time I have the opportunity." },
+  "culture": { pos: "n.", def: "the customs, ideas and social behaviour of a particular people.", ex: "Language forms our culture." },
+  "idiom": { pos: "n.", def: "a group of words with a meaning that is different from the meanings of the individual words.", ex: "Idioms are part of our culture code." },
+  "discourse": { pos: "n.", def: "written or spoken communication; the way we organise ideas in text.", ex: "Discourse markers help organise ideas." },
+  "collocation": { pos: "n.", def: "a combination of words that often go together.", ex: "‘Open and friendly’ is a common collocation." }
+};
+
+/* ========== NORMALIZE & isOk ========== */
+function normalize(s) {
+  if (s == null) return '';
+  return String(s)
+    .toLowerCase()
+    .trim()
+    .replace(/[\u2018\u2019\u201A\u201B]/g, "'")
+    .replace(/[\u201C\u201D\u201E\u201F]/g, '"')
+    .replace(/\s+/g, ' ')
+    .replace(/[.?!]+$/, '')
+    .trim();
+}
+
+function isOk(user, answer) {
+  if (!answer) return false;
+  const u = normalize(user);
+  if (!u) return false;
+  const parts = String(answer).split('|').map(a => normalize(a));
+  for (const p of parts) {
+    if (!p) continue;
+    if (u === p) return true;
+    if (p.length > 2 && (u.includes(p) || p.includes(u))) return true;
+    // any comma-separated piece
+    const commas = p.split(',').map(x => x.trim()).filter(Boolean);
+    for (const c of commas) {
+      if (c.length > 2 && (u === c || u.includes(c) || c.includes(u))) return true;
+    }
+  }
+  return false;
+}
+
+/* ========== LIVE CHECKING ========== */
+function liveCheck(el) {
+  const ans = el.getAttribute('data-answer');
+  if (!ans) return;
+  const val = el.value;
+  if (!val.trim()) {
+    el.classList.remove('ok', 'bad');
+    return;
+  }
+  // prefix match for progressive feedback
+  const u = normalize(val);
+  const parts = ans.split('|').map(a => normalize(a));
+  let good = false;
+  let prefix = false;
+  for (const p of parts) {
+    if (!p) continue;
+    if (u === p || (p.length > 2 && (u.includes(p) || p.includes(u)))) { good = true; break; }
+    if (p.startsWith(u) || u.startsWith(p.slice(0, Math.min(u.length, p.length)))) prefix = true;
+  }
+  el.classList.remove('ok', 'bad');
+  if (good) el.classList.add('ok');
+  else if (prefix && u.length > 0) el.classList.add('ok');
+  else el.classList.add('bad');
+}
+
+document.querySelectorAll('input[data-answer], select[data-answer]').forEach(el => {
+  el.addEventListener('input', () => liveCheck(el));
+  el.addEventListener('change', () => liveCheck(el));
+});
+
+/* ========== SCORE & CHECK / SHOW / CLEAR ========== */
+function getExInputs(exId) {
+  return document.querySelectorAll(`[data-ex="${exId}"] [data-answer]`);
+}
+
+function checkEx(exId) {
+  const inputs = getExInputs(exId);
+  let correct = 0, total = 0;
+  inputs.forEach(el => {
+    // skip empty correction fields when TF is True
+    if (el.classList.contains('tf-correction')) {
+      const sel = el.closest('.row').querySelector('.tf-select');
+      if (sel && normalize(sel.value) === 'true') {
+        el.classList.remove('ok', 'bad');
+        return;
+      }
+    }
+    const ans = el.getAttribute('data-answer');
+    if (ans === '' || ans == null) return; // empty answer means no score
+    total++;
+    if (isOk(el.value, ans)) {
+      el.classList.add('ok');
+      el.classList.remove('bad');
+      correct++;
+    } else {
+      el.classList.add('bad');
+      el.classList.remove('ok');
+    }
+  });
+  const pill = document.getElementById('score-' + exId);
+  if (pill) pill.textContent = correct + '/' + total;
+  return { correct, total };
+}
+
+function showAnswers(exId) {
+  const inputs = getExInputs(exId);
+  inputs.forEach(el => {
+    const ans = el.getAttribute('data-answer');
+    if (!ans) return;
+    const first = ans.split('|')[0];
+    if (el.tagName === 'SELECT') {
+      // try to select matching option
+      for (const opt of el.options) {
+        if (normalize(opt.value) === normalize(first) || isOk(opt.value, ans)) {
+          el.value = opt.value;
+          break;
+        }
+      }
+    } else {
+      el.value = first;
+    }
+    el.classList.add('ok');
+    el.classList.remove('bad');
+    const rev = document.querySelector(`.ans-reveal[data-for="${el.dataset.sid}"]`);
+    if (rev) { rev.textContent = first; rev.classList.add('show'); }
+  });
+  checkEx(exId);
+}
+
+function clearEx(exId) {
+  const inputs = getExInputs(exId);
+  inputs.forEach(el => {
+    if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+    el.classList.remove('ok', 'bad');
+    const rev = document.querySelector(`.ans-reveal[data-for="${el.dataset.sid}"]`);
+    if (rev) rev.classList.remove('show');
+  });
+  const pill = document.getElementById('score-' + exId);
+  if (pill) {
+    const total = [...inputs].filter(e => e.getAttribute('data-answer')).length;
+    pill.textContent = '0/' + total;
+  }
+}
+
+document.querySelectorAll('.btn-check').forEach(btn => {
+  btn.addEventListener('click', () => checkEx(btn.dataset.ex));
+});
+document.querySelectorAll('.btn-show').forEach(btn => {
+  btn.addEventListener('click', () => showAnswers(btn.dataset.ex));
+});
+document.querySelectorAll('.btn-clear').forEach(btn => {
+  btn.addEventListener('click', () => clearEx(btn.dataset.ex));
+});
+
+/* TF show correction input */
+document.querySelectorAll('.tf-select').forEach(sel => {
+  sel.addEventListener('change', () => {
+    const corr = sel.closest('.row').querySelector('.tf-correction');
+    if (corr) {
+      if (normalize(sel.value) === 'false') corr.classList.add('show');
+      else { corr.classList.remove('show'); corr.value = ''; corr.classList.remove('ok','bad'); }
+    }
+  });
+});
+
+/* ========== NAVIGATION ========== */
+let currentSec = 1;
+const totalSecs = 12;
+
+function showSection(n) {
+  n = Math.max(1, Math.min(totalSecs, n));
+  currentSec = n;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById('s' + n);
+  if (sec) sec.classList.add('active');
+  document.querySelectorAll('.sidebar a').forEach(a => {
+    a.classList.toggle('active', parseInt(a.dataset.sec) === n);
+  });
+  document.getElementById('secIndicator').textContent = n + ' / ' + totalSecs;
+  window.scrollTo(0, 0);
+  // close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+document.querySelectorAll('.sidebar a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    showSection(parseInt(a.dataset.sec));
+  });
+});
+document.getElementById('prevSec').addEventListener('click', () => showSection(currentSec - 1));
+document.getElementById('nextSec').addEventListener('click', () => showSection(currentSec + 1));
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
+/* ========== LOCAL STORAGE ========== */
+function saveAll() {
+  const data = { name: localStorage.getItem(STORAGE_KEY + 'name') || '' };
+  document.querySelectorAll('[data-sid]').forEach(el => {
+    data[el.dataset.sid] = el.value;
+  });
+  localStorage.setItem(STORAGE_KEY + 'data', JSON.stringify(data));
+}
+
+function loadAll() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY + 'data');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.name) {
+      document.getElementById('nameDisplay').textContent = data.name;
+      document.getElementById('reportName').value = data.name;
+    }
+    document.querySelectorAll('[data-sid]').forEach(el => {
+      if (data[el.dataset.sid] != null) {
+        el.value = data[el.dataset.sid];
+        if (el.hasAttribute('data-answer')) liveCheck(el);
+        // TF correction visibility
+        if (el.classList.contains('tf-select')) {
+          const corr = el.closest('.row')?.querySelector('.tf-correction');
+          if (corr && normalize(el.value) === 'false') corr.classList.add('show');
+        }
+      }
+    });
+  } catch (e) {}
+}
+
+document.querySelectorAll('[data-sid]').forEach(el => {
+  el.addEventListener('input', saveAll);
+  el.addEventListener('change', saveAll);
+});
+loadAll();
+
+/* ========== RESULTS REPORT ========== */
+function collectScores() {
+  const exercises = ['2a','2b','3a','3b','4a','5a','5b','6a','8a','9a'];
+  const results = [];
+  let totalC = 0, totalT = 0;
+  exercises.forEach(ex => {
+    const r = checkEx(ex);
+    totalC += r.correct;
+    totalT += r.total;
+    results.push({ id: ex, ...r });
+  });
+  return { results, totalC, totalT, pct: totalT ? Math.round(100 * totalC / totalT) : 0 };
+}
+
+document.getElementById('btnReport').addEventListener('click', () => {
+  document.getElementById('reportModal').classList.add('show');
+  document.getElementById('reportContent').classList.add('hidden');
+});
+
+document.getElementById('closeReport').addEventListener('click', () => {
+  document.getElementById('reportModal').classList.remove('show');
+});
+
+document.getElementById('genReport').addEventListener('click', () => {
+  const name = document.getElementById('reportName').value.trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  localStorage.setItem(STORAGE_KEY + 'name', name);
+  document.getElementById('nameDisplay').textContent = name;
+  saveAll();
+
+  const { results, totalC, totalT, pct } = collectScores();
+  document.getElementById('reportPct').textContent = `Overall: ${pct}% (${totalC}/${totalT})`;
+  const list = document.getElementById('reportList');
+  list.innerHTML = '';
+  results.forEach(r => {
+    const li = document.createElement('li');
+    const ok = r.correct === r.total && r.total > 0;
+    li.innerHTML = `<span class="${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'} Exercise ${r.id.toUpperCase()}: ${r.correct}/${r.total}</span>`;
+    if (!ok && r.total > 0) {
+      const inputs = getExInputs(r.id);
+      const wrongs = [];
+      inputs.forEach(el => {
+        const ans = el.getAttribute('data-answer');
+        if (!ans) return;
+        if (el.classList.contains('tf-correction')) {
+          const sel = el.closest('.row').querySelector('.tf-select');
+          if (sel && normalize(sel.value) === 'true') return;
+        }
+        if (!isOk(el.value, ans)) {
+          wrongs.push(ans.split('|')[0]);
+        }
+      });
+      if (wrongs.length) {
+        li.innerHTML += `<br><small>Correct: ${wrongs.slice(0,5).join(' · ')}</small>`;
+      }
+    }
+    list.appendChild(li);
+  });
+  document.getElementById('reportContent').classList.remove('hidden');
+});
+
+document.getElementById('copyReport').addEventListener('click', () => {
+  const name = document.getElementById('reportName').value.trim() || 'Student';
+  const { results, totalC, totalT, pct } = collectScores();
+  let txt = `Results Report – Personality, Language & Experience\nStudent: ${name}\nDate: ${new Date().toLocaleDateString()}\nOverall: ${pct}% (${totalC}/${totalT})\n\n`;
+  results.forEach(r => {
+    txt += `Exercise ${r.id.toUpperCase()}: ${r.correct}/${r.total}\n`;
+  });
+  navigator.clipboard.writeText(txt).then(() => alert('Copied!')).catch(() => alert('Could not copy'));
+});
+
+document.getElementById('dlReport').addEventListener('click', () => {
+  const name = document.getElementById('reportName').value.trim() || 'Student';
+  const { results, totalC, totalT, pct } = collectScores();
+  let txt = `Results Report – Personality, Language & Experience\nStudent: ${name}\nDate: ${new Date().toLocaleDateString()}\nOverall: ${pct}% (${totalC}/${totalT})\n\n`;
+  results.forEach(r => {
+    txt += `Exercise ${r.id.toUpperCase()}: ${r.correct}/${r.total}\n`;
+  });
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `report_${name.replace(/\s+/g,'_')}.txt`;
+  a.click();
+});
+
+/* ========== WORD POPUP ========== */
+const popup = document.getElementById('word-popup');
+let popupIgnoreOutside = false;
+
+function showPopup(word, x, y) {
+  const w = word.toLowerCase().replace(/[^a-z'-]/g, '');
+  if (!w || w.length < 2) return;
+  popup.style.display = 'block';
+  popup.style.left = Math.min(x, window.innerWidth - 340) + 'px';
+  popup.style.top = (y + 12) + 'px';
+  document.getElementById('wpWord').textContent = w;
+  document.getElementById('wpPos').textContent = '';
+  document.getElementById('wpDef').textContent = 'Looking up…';
+  document.getElementById('wpEx').textContent = '';
+  popupIgnoreOutside = true;
+  setTimeout(() => { popupIgnoreOutside = false; }, 400);
+
+  // glossary first
+  if (GLOSSARY[w]) {
+    const g = GLOSSARY[w];
+    document.getElementById('wpPos').textContent = g.pos;
+    document.getElementById('wpDef').textContent = g.def;
+    document.getElementById('wpEx').textContent = g.ex || '';
+    return;
+  }
+
+  // Datamuse then Free Dictionary
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 8000);
+
+  fetch(`https://api.datamuse.com/words?sp=${encodeURIComponent(w)}&md=d&max=1`, { signal: ctrl.signal })
+    .then(r => r.json())
+    .then(data => {
+      clearTimeout(timer);
+      if (data && data[0] && data[0].defs && data[0].defs[0]) {
+        const def = data[0].defs[0];
+        const parts = def.split('\t');
+        document.getElementById('wpPos').textContent = parts[0] || '';
+        document.getElementById('wpDef').textContent = parts[1] || def;
+        return;
+      }
+      return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(w)}`, { signal: ctrl.signal })
+        .then(r => r.json())
+        .then(data => {
+          if (Array.isArray(data) && data[0]) {
+            const e = data[0];
+            const m = e.meanings && e.meanings[0];
+            document.getElementById('wpPos').textContent = m ? m.partOfSpeech : '';
+            document.getElementById('wpDef').textContent = m && m.definitions[0] ? m.definitions[0].definition : 'No definition found.';
+            const ex = m && m.definitions[0] && m.definitions[0].example;
+            document.getElementById('wpEx').textContent = ex || '';
+          } else {
+            document.getElementById('wpDef').textContent = 'No definition found.';
+          }
+        });
+    })
+    .catch(() => {
+      clearTimeout(timer);
+      document.getElementById('wpDef').textContent = 'Lookup failed (offline or timeout).';
+    });
+}
+
+document.getElementById('wpClose').addEventListener('click', () => { popup.style.display = 'none'; });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') popup.style.display = 'none'; });
+document.addEventListener('click', e => {
+  if (popupIgnoreOutside) return;
+  if (!popup.contains(e.target)) popup.style.display = 'none';
+});
+
+// Desktop double-click
+document.getElementById('main').addEventListener('dblclick', e => {
+  const sel = window.getSelection();
+  const t = sel.toString().trim();
+  if (t && t.split(/\s+/).length === 1) {
+    showPopup(t, e.clientX, e.clientY);
+  }
+});
+
+// Mobile long-press
+let pressTimer;
+document.getElementById('main').addEventListener('touchstart', e => {
+  const touch = e.touches[0];
+  pressTimer = setTimeout(() => {
+    const sel = window.getSelection();
+    let t = sel.toString().trim();
+    if (!t) {
+      // try to get word under finger – simplified
+      const range = document.caretRangeFromPoint?.(touch.clientX, touch.clientY);
+      if (range) {
+        range.expand?.('word');
+        t = range.toString().trim();
+      }
+    }
+    if (t && t.split(/\s+/).length <= 2) {
+      showPopup(t, touch.clientX, touch.clientY);
+    }
+  }, 550);
+});
+document.getElementById('main').addEventListener('touchend', () => clearTimeout(pressTimer));
+document.getElementById('main').addEventListener('touchmove', () => clearTimeout(pressTimer));
+
+/* ========== WRITING FEEDBACK (LanguageTool) ========== */
+document.querySelectorAll('.btn-write').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const id = btn.dataset.textarea;
+    const ta = document.querySelector(`[data-sid="${id}"]`);
+    const box = document.getElementById('lt-' + id);
+    if (!ta || !box) return;
+    const text = ta.value.trim();
+    if (!text) { box.innerHTML = '<p>Write something first.</p>'; box.classList.add('visible'); return; }
+    box.innerHTML = '<p>Checking…</p>';
+    box.classList.add('visible');
+
+    try {
+      const res = await fetch('https://api.languagetool.org/v2/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ language: 'en-GB', text })
+      });
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      let html = '';
+
+      // local style heuristics
+      const styleIssues = [];
+      if (/\b(gonna|wanna|gotta|kinda|sorta)\b/i.test(text)) {
+        styleIssues.push({ what: 'Informal form (gonna/wanna…)', why: 'Prefer full forms in formal or careful writing.', try: null });
+      }
+      if (/\b(lol|omg|btw|idk|tbh)\b/i.test(text)) {
+        styleIssues.push({ what: 'Chat abbreviation', why: 'Avoid in academic or formal writing.', try: null });
+      }
+      if (text === text.toUpperCase() && text.length > 15) {
+        styleIssues.push({ what: 'ALL CAPS', why: 'Looks like shouting; use normal capitalisation.', try: null });
+      }
+      if (/[.!?].{120,}/.test(text.replace(/\n/g, ' '))) {
+        styleIssues.push({ what: 'Very long sentence', why: 'Consider splitting into shorter sentences for clarity.', try: null });
+      }
+      if (/\b(thing|stuff)\b/i.test(text)) {
+        styleIssues.push({ what: 'Vague word (thing/stuff)', why: 'Prefer a more precise noun.', try: null });
+      }
+      if (/\b(very|really|so)\s+(very|really|so)\b/i.test(text)) {
+        styleIssues.push({ what: 'Repeated intensifier', why: 'One intensifier is usually enough.', try: null });
+      }
+
+      const matches = data.matches || [];
+      if (!matches.length && !styleIssues.length) {
+        html = '<p style="color:var(--green)">✓ No issues found. Good job!</p>';
+      } else {
+        matches.forEach(m => {
+          const sug = (m.replacements || []).slice(0, 3).map(r => r.value);
+          html += `<div class="lt-issue">
+            <div class="what">${m.message}</div>
+            <div class="why">${m.rule?.description || ''}</div>
+            ${sug.length ? `<div class="try">Try: ${sug.map(s => `<span data-offset="${m.offset}" data-len="${m.length}" data-sug="${s}">${s}</span>`).join('')}</div>` : ''}
+          </div>`;
+        });
+        styleIssues.forEach(s => {
+          html += `<div class="lt-issue style">
+            <div class="what">${s.what}</div>
+            <div class="why">${s.why}</div>
+          </div>`;
+        });
+      }
+      box.innerHTML = html;
+
+      // clickable suggestions
+      box.querySelectorAll('.try span').forEach(span => {
+        span.addEventListener('click', () => {
+          const off = parseInt(span.dataset.offset);
+          const len = parseInt(span.dataset.len);
+          const sug = span.dataset.sug;
+          const before = ta.value.slice(0, off);
+          const after = ta.value.slice(off + len);
+          ta.value = before + sug + after;
+          ta.dispatchEvent(new Event('input'));
+          span.closest('.lt-issue').style.opacity = '.5';
+        });
+      });
+    } catch (err) {
+      box.innerHTML = '<p>Could not check writing (needs internet). Please try again later.</p>';
+    }
+  });
+});
+
+/* init scores */
+['2a','2b','3a','3b','4a','5a','5b','6a','8a','9a'].forEach(ex => {
+  const inputs = getExInputs(ex);
+  const total = [...inputs].filter(e => e.getAttribute('data-answer') !== null && e.getAttribute('data-answer') !== '').length;
+  const pill = document.getElementById('score-' + ex);
+  if (pill && total) pill.textContent = '0/' + total;
+});
+</script>
+</body>
+</html>
+```
